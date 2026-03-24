@@ -34,12 +34,27 @@
             <div class="nav-actions" style="display: flex; align-items: center; gap: 1rem;">
                 <a id="navLoginBtn" href="#" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background-color: #9EFF76; color: #0D0D0D; font-weight: bold;"><i data-lucide="user"></i> Login / Sign Up</a>
                 <div id="userBtnContainer" style="display: none;"></div>
-                <div class="mobile-menu-btn">
+                <div class="mobile-menu-btn" id="mobileMenuBtn">
                     <i data-lucide="menu"></i>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">
+            <i data-lucide="x"></i>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="book-open"></i> My Courses</a>
+            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="file-check-2"></i> Mock Tests</a>
+            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
+            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
+            <a id="mobileLoginBtn" href="#" class="btn btn-primary" style="margin-top: 1rem; padding: 0.5rem 1.25rem; font-size: 1rem; background-color: #9EFF76; color: #0D0D0D; font-weight: bold;"><i data-lucide="user"></i> Login / Sign Up</a>
+        </nav>
+    </div>
 
     <main>
         <!-- Hero Section -->
@@ -279,8 +294,63 @@
                 </div>
             </div>
         </section>
-    </main>
+        <!-- Custom Auth Modal overlay -->
+        <div id="customAuthModal" class="auth-modal-overlay">
+            <div class="auth-modal glass-card">
+                <button class="auth-close-btn" id="authCloseBtn"><i data-lucide="x"></i></button>
+                <div class="auth-modal-header">
+                    <i data-lucide="hexagon" class="logo-icon cyber-green"></i>
+                    <h2>Access Portal</h2>
+                    <p id="authSubtitle">Select your preferred authentication method.</p>
+                </div>
+                
+                <!-- State 1: 4 Buttons -->
+                <div id="authStateMethods" class="auth-state active">
+                    <button class="auth-btn" id="btnGoogle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="monochrome-icon"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Continue with Google
+                    </button>
+                    <button class="auth-btn" id="btnFacebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="monochrome-icon"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14-2.857 0-4.8 1.74-4.8 4.96v2.54H7.5v4h2.343v10.5h4.157v-10.5z"/></svg>                        Continue with Facebook
+                    </button>
+                    <div class="auth-divider"><span>OR</span></div>
+                    <button class="auth-btn" id="btnPhone">
+                        <i data-lucide="phone"></i> Login with Phone
+                    </button>
+                    <button class="auth-btn" id="btnEmail">
+                        <i data-lucide="mail"></i> Login with Email
+                    </button>
+                </div>
 
+                <!-- State 2: Input (Phone/Email) -->
+                <div id="authStateInput" class="auth-state hidden" style="display: none;">
+                    <form id="authInputForm">
+                        <div class="input-group">
+                            <label id="authInputLabel" for="authInputField">Email Address</label>
+                            <input type="text" id="authInputField" class="auth-input" placeholder="Enter your details..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="btnSendCode">Send Verification Code <i data-lucide="arrow-right"></i></button>
+                    </form>
+                    <button class="btn btn-secondary btn-block auth-back-btn" id="btnBackToMethods" style="margin-top: 1rem;">Back to Methods</button>
+                </div>
+
+                <!-- State 3: OTP Verify -->
+                <div id="authStateVerify" class="auth-state hidden" style="display: none;">
+                    <form id="authVerifyForm">
+                        <div class="input-group">
+                            <label for="authOtpField">Verification Code (6-digit)</label>
+                            <input type="text" id="authOtpField" class="auth-input otp-input" placeholder="000000" maxlength="6" required>
+                        </div>
+                        <button type="submit" class="btn btn-verify btn-block" id="btnVerifyOTP">Verify & Login</button>
+                    </form>
+                    <button class="btn btn-secondary btn-block auth-back-btn" id="btnBackToInput" style="margin-top: 1rem;">Go Back</button>
+                </div>
+
+                <div id="authErrorBox" class="auth-error-box hidden" style="display: none;"></div>
+            </div>
+        </div>
+
+    </main>
     <footer>
         <div class="container footer-content border-top glass-panel">
             <div class="logo">
@@ -372,17 +442,13 @@
                     if (window.Clerk.user) {
                         document.querySelector('.pricing').scrollIntoView({ behavior: 'smooth' });
                     } else {
-                        // Normally, metadata like 'tier' requires webhooks to push safely to Clerk user database.
-                        // Here we just trigger the signup modal locally.
-                        window.Clerk.openSignUp();
+                        // Open Custom Auth Modal instead of window.Clerk.openSignUp()
+                        openAuthModal();
                     }
                 };
 
                 if (startBtn) startBtn.addEventListener('click', handleAuthClick);
-                if (navLoginBtn) navLoginBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.Clerk.openSignIn();
-                });
+                if (navLoginBtn) navLoginBtn.addEventListener('click', handleAuthClick);
 
                 const tierBtns = document.querySelectorAll('.tier-signup-btn');
                 tierBtns.forEach(btn => {
@@ -390,6 +456,246 @@
                         handleAuthClick(e, btn.getAttribute('data-tier'));
                     });
                 });
+
+                // Mobile Menu Logic
+                const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+                const mobileMenuClose = document.getElementById('mobileMenuClose');
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+                const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+
+                const closeMobileMenu = () => {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                };
+
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', () => {
+                        mobileMenu.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    });
+                }
+
+                if (mobileMenuClose) {
+                    mobileMenuClose.addEventListener('click', closeMobileMenu);
+                }
+
+                mobileNavItems.forEach(item => {
+                    item.addEventListener('click', closeMobileMenu);
+                });
+
+                if (mobileLoginBtn) {
+                    if (window.Clerk.user) {
+                        mobileLoginBtn.style.display = 'none'; // Hide if logged in
+                    } else {
+                        mobileLoginBtn.addEventListener('click', (e) => {
+                            closeMobileMenu();
+                            handleAuthClick(e);
+                        });
+                    }
+                }
+
+                // --- CUSTOM AUTH MODAL LOGIC INJECTED HERE ---
+                const customAuthModal = document.getElementById('customAuthModal');
+                const authCloseBtn = document.getElementById('authCloseBtn');
+                const authStateMethods = document.getElementById('authStateMethods');
+                const authStateInput = document.getElementById('authStateInput');
+                const authStateVerify = document.getElementById('authStateVerify');
+                const authInputLabel = document.getElementById('authInputLabel');
+                const authInputField = document.getElementById('authInputField');
+                const authSubtitle = document.getElementById('authSubtitle');
+                const authErrorBox = document.getElementById('authErrorBox');
+                const authInputForm = document.getElementById('authInputForm');
+                const authVerifyForm = document.getElementById('authVerifyForm');
+                const btnSendCode = document.getElementById('btnSendCode');
+                const btnVerifyOTP = document.getElementById('btnVerifyOTP');
+
+                let currentAuthType = 'email'; // 'email' or 'phone'
+                let isSignUpFlow = false;
+                let pendingAction = null; // store the clerk attempt object
+
+                const openAuthModal = () => {
+                    customAuthModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    resetAuthModal();
+                };
+
+                const closeAuthModal = () => {
+                    customAuthModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                };
+
+                const resetAuthModal = () => {
+                    authStateMethods.style.display = 'block';
+                    authStateInput.style.display = 'none';
+                    authStateVerify.style.display = 'none';
+                    authSubtitle.innerText = 'Select your preferred authentication method.';
+                    authErrorBox.style.display = 'none';
+                    authInputField.value = '';
+                    document.getElementById('authOtpField').value = '';
+                };
+
+                const showError = (msg) => {
+                    authErrorBox.innerText = msg;
+                    authErrorBox.style.display = 'block';
+                };
+
+                authCloseBtn.addEventListener('click', closeAuthModal);
+                document.getElementById('btnBackToMethods').addEventListener('click', resetAuthModal);
+                document.getElementById('btnBackToInput').addEventListener('click', () => {
+                    authStateVerify.style.display = 'none';
+                    authStateInput.style.display = 'block';
+                    authErrorBox.style.display = 'none';
+                    authSubtitle.innerText = currentAuthType === 'email' ? 'Enter your email address.' : 'Enter your phone number.';
+                });
+
+                // Social Logic
+                document.getElementById('btnGoogle').addEventListener('click', async () => {
+                    try {
+                        await window.Clerk.client.signIn.authenticateWithRedirect({
+                            strategy: 'oauth_google',
+                            redirectUrl: window.location.href,
+                            redirectUrlComplete: window.location.href
+                        });
+                    } catch(err) {
+                        showError(err.errors ? err.errors[0].message : "Google Auth Failed.");
+                    }
+                });
+
+                document.getElementById('btnFacebook').addEventListener('click', async () => {
+                    try {
+                        await window.Clerk.client.signIn.authenticateWithRedirect({
+                            strategy: 'oauth_facebook',
+                            redirectUrl: window.location.href,
+                            redirectUrlComplete: window.location.href
+                        });
+                    } catch(err) {
+                        showError(err.errors ? err.errors[0].message : "Facebook Auth Failed.");
+                    }
+                });
+
+                // Setup Input
+                const setupInputState = (type) => {
+                    currentAuthType = type;
+                    authStateMethods.style.display = 'none';
+                    authStateInput.style.display = 'block';
+                    authErrorBox.style.display = 'none';
+                    if (type === 'email') {
+                        authInputLabel.innerText = 'Email Address';
+                        authInputField.placeholder = 'you@example.com';
+                        authInputField.type = 'email';
+                        authSubtitle.innerText = 'We will send a 6-digit code to your email.';
+                    } else {
+                        authInputLabel.innerText = 'Phone Number (with country code)';
+                        authInputField.placeholder = '+91 9876543210';
+                        authInputField.type = 'tel';
+                        authSubtitle.innerText = 'We will send an SMS code to verify.';
+                    }
+                    authInputField.focus();
+                };
+
+                document.getElementById('btnEmail').addEventListener('click', () => setupInputState('email'));
+                document.getElementById('btnPhone').addEventListener('click', () => setupInputState('phone'));
+
+                // Send OTP logic
+                authInputForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    authErrorBox.style.display = 'none';
+                    btnSendCode.innerHTML = 'Sending...';
+                    btnSendCode.disabled = true;
+
+                    const identifier = authInputField.value.trim();
+                    const strategy = currentAuthType === 'email' ? 'email_code' : 'phone_code';
+
+                    try {
+                        const signInAttempt = await window.Clerk.client.signIn.create({ identifier });
+                        const factor = signInAttempt.supportedFirstFactors.find(f => f.strategy === strategy);
+                        
+                        if (!factor) { throw new Error("This verification method is not supported by your Clerk account settings."); }
+
+                        await signInAttempt.prepareFirstFactor(factor);
+                        
+                        isSignUpFlow = false;
+                        pendingAction = signInAttempt;
+
+                        authStateInput.style.display = 'none';
+                        authStateVerify.style.display = 'block';
+                        authSubtitle.innerText = 'Enter the 6-digit code sent to you.';
+                        document.getElementById('authOtpField').focus();
+
+                    } catch (err) {
+                        if (err.errors && err.errors[0].code === 'form_identifier_not_found') {
+                            try {
+                                const params = currentAuthType === 'email' 
+                                    ? { emailAddress: identifier } 
+                                    : { phoneNumber: identifier };
+
+                                const signUpAttempt = await window.Clerk.client.signUp.create(params);
+                                
+                                if (currentAuthType === 'email') {
+                                    await signUpAttempt.prepareEmailAddressVerification({ strategy: 'email_code' });
+                                } else {
+                                    await signUpAttempt.preparePhoneNumberVerification({ strategy: 'phone_code' });
+                                }
+
+                                isSignUpFlow = true;
+                                pendingAction = signUpAttempt;
+
+                                authStateInput.style.display = 'none';
+                                authStateVerify.style.display = 'block';
+                                authSubtitle.innerText = 'Enter the 6-digit code sent to you.';
+                                document.getElementById('authOtpField').focus();
+                            } catch (signUpErr) {
+                                showError(signUpErr.errors ? signUpErr.errors[0].message : "Failed to prepare signup.");
+                            }
+                        } else {
+                            showError(err.errors ? err.errors[0].message : "An error occurred.");
+                        }
+                    } finally {
+                        btnSendCode.innerHTML = 'Send Verification Code <i data-lucide="arrow-right"></i>';
+                        btnSendCode.disabled = false;
+                        lucide.createIcons();
+                    }
+                });
+
+                // Verify OTP Logic
+                authVerifyForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    authErrorBox.style.display = 'none';
+                    btnVerifyOTP.innerText = 'Verifying...';
+                    btnVerifyOTP.disabled = true;
+
+                    const code = document.getElementById('authOtpField').value.trim();
+
+                    try {
+                        let finalStatus;
+                        if (!isSignUpFlow) {
+                            const attempt = await window.Clerk.client.signIn.attemptFirstFactor({
+                                strategy: currentAuthType === 'email' ? 'email_code' : 'phone_code',
+                                code
+                            });
+                            finalStatus = attempt;
+                        } else {
+                            const method = currentAuthType === 'email' ? 'attemptEmailAddressVerification' : 'attemptPhoneNumberVerification';
+                            const attempt = await window.Clerk.client.signUp[method]({ code });
+                            finalStatus = attempt;
+                        }
+
+                        if (finalStatus.status === 'complete') {
+                            await window.Clerk.setActive({ session: finalStatus.createdSessionId });
+                            closeAuthModal();
+                            window.location.reload(); 
+                        } else {
+                            showError("Verification incomplete. Check Clerk Dashboard settings (e.g., missing required fields like Name).");
+                        }
+                    } catch (err) {
+                        showError(err.errors ? err.errors[0].message : "Invalid code. Please try again.");
+                    } finally {
+                        btnVerifyOTP.innerText = 'Verify & Login';
+                        btnVerifyOTP.disabled = false;
+                    }
+                });
+
             } catch (err) {
                 console.error("Clerk Error:", err);
             }
