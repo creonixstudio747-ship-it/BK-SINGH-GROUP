@@ -32,8 +32,42 @@
                 <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
             </nav>
             <div class="nav-actions" style="display: flex; align-items: center; gap: 1rem;">
-                <a id="navLoginBtn" href="#" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background-color: #9EFF76; color: #0D0D0D; font-weight: bold;"><i data-lucide="user"></i> Login / Sign Up</a>
-                <div id="userBtnContainer" style="display: none;"></div>
+                <a id="navLoginBtn" href="#" class="nav-login-cyber"><i data-lucide="user"></i> Login / Sign Up</a>
+                
+                <!-- Custom Profile Dropdown Container -->
+                <div id="customProfileContainer" class="custom-profile-container hidden" style="display: none;">
+                    <button id="profileToggleBtn" class="profile-toggle-btn">
+                        <img id="profileAvatar" src="" alt="Avatar" class="profile-avatar">
+                        <span id="profileFirstName" class="profile-first-name">User</span>
+                        <i data-lucide="chevron-down" class="profile-chevron"></i>
+                    </button>
+                    <!-- Glassmorphism Dropdown -->
+                    <div id="profileDropdown" class="profile-dropdown">
+                        <div class="profile-dropdown-header">
+                            <h4 id="profileFullName">User Name</h4>
+                            <p id="profileContact">user@example.com</p>
+                        </div>
+                        <div class="profile-dropdown-body">
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <label for="gradeSelect">Curriculum Grade</label>
+                                <select id="gradeSelect" class="auth-input cyber-select">
+                                    <option value="" disabled selected>Select your Class</option>
+                                    <option value="Class 6">Class 6</option>
+                                    <option value="Class 7">Class 7</option>
+                                    <option value="Class 8">Class 8</option>
+                                    <option value="Class 9">Class 9</option>
+                                    <option value="Class 10">Class 10</option>
+                                    <option value="Class 11">Class 11</option>
+                                    <option value="Class 12">Class 12</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="profile-dropdown-footer">
+                            <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out"></i> Sign Out</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mobile-menu-btn" id="mobileMenuBtn">
                     <i data-lucide="menu"></i>
                 </div>
@@ -419,21 +453,78 @@
                 const startBtn = document.getElementById('startJourneyBtn');
                 const navLoginBtn = document.getElementById('navLoginBtn');
                 
-                // Update UI if logged in
-                if (window.Clerk.user) {
+                // Profile Dropdown Setup
+                const updateProfileUI = () => {
+                    const user = window.Clerk.user;
+                    if (!user) return;
+
                     if (startBtn) {
                         startBtn.innerHTML = 'Go to Dashboard <i data-lucide="arrow-right"></i>';
                         lucide.createIcons();
                     }
-                    if (navLoginBtn) {
-                        navLoginBtn.style.display = 'none'; // Hide login button
+                    if (navLoginBtn) navLoginBtn.style.display = 'none'; // Hide login button
+
+                    const customProfileContainer = document.getElementById('customProfileContainer');
+                    if (customProfileContainer) {
+                        customProfileContainer.style.display = 'block';
+                        
+                        // Populate Avatar & Name
+                        document.getElementById('profileAvatar').src = user.imageUrl;
+                        document.getElementById('profileFirstName').innerText = user.firstName || 'User';
+                        document.getElementById('profileFullName').innerText = user.fullName || user.firstName || 'Verified Member';
+                        
+                        const primaryEmail = user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : '';
+                        const primaryPhone = user.primaryPhoneNumber ? user.primaryPhoneNumber.phoneNumber : '';
+                        document.getElementById('profileContact').innerText = primaryEmail || primaryPhone;
+
+                        // Retrieve unsafeMetadata for grade
+                        const gradeSelect = document.getElementById('gradeSelect');
+                        if (user.unsafeMetadata && user.unsafeMetadata.grade) {
+                            gradeSelect.value = user.unsafeMetadata.grade;
+                        }
+
+                        // Handle Grade Update
+                        gradeSelect.addEventListener('change', async (e) => {
+                            try {
+                                gradeSelect.disabled = true;
+                                await window.Clerk.user.update({
+                                    unsafeMetadata: { ...window.Clerk.user.unsafeMetadata, grade: e.target.value }
+                                });
+                            } catch(err) {
+                                console.error("Grade update failed:", err);
+                            } finally {
+                                gradeSelect.disabled = false;
+                            }
+                        });
+
+                        // Dropdown Toggle
+                        const profileToggleBtn = document.getElementById('profileToggleBtn');
+                        const profileDropdown = document.getElementById('profileDropdown');
+                        
+                        profileToggleBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            profileDropdown.classList.toggle('active');
+                            profileToggleBtn.querySelector('.profile-chevron').classList.toggle('rotate');
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', (e) => {
+                            if (!customProfileContainer.contains(e.target)) {
+                                profileDropdown.classList.remove('active');
+                                profileToggleBtn.querySelector('.profile-chevron').classList.remove('rotate');
+                            }
+                        });
+
+                        // Logout Button
+                        document.getElementById('logoutBtn').addEventListener('click', () => {
+                            window.Clerk.signOut().then(() => { window.location.reload(); });
+                        });
                     }
-                    
-                    const userContainer = document.getElementById('userBtnContainer');
-                    if (userContainer) {
-                        userContainer.style.display = 'block';
-                        window.Clerk.mountUserButton(userContainer);
-                    }
+                };
+
+                // Update UI if logged in
+                if (window.Clerk.user) {
+                    updateProfileUI();
                 }
 
                 // Attach click handlers
