@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B.K. Singh Group | Master Your Future</title>
     <meta name="description" content="India's Elite Hub for MBA, CAT, and Professional Placement Excellence.">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -30,10 +30,13 @@
                 <a href="#" class="nav-item"><i data-lucide="file-check-2"></i> Mock Tests</a>
                 <a href="#" class="nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
                 <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
-                <a href="#" class="nav-item"><i data-lucide="user"></i> Profile</a>
             </nav>
-            <div class="mobile-menu-btn">
-                <i data-lucide="menu"></i>
+            <div class="nav-actions" style="display: flex; align-items: center; gap: 1rem;">
+                <a id="navLoginBtn" href="#" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background-color: #9EFF76; color: #0D0D0D; font-weight: bold;"><i data-lucide="user"></i> Login / Sign Up</a>
+                <div id="userBtnContainer" style="display: none;"></div>
+                <div class="mobile-menu-btn">
+                    <i data-lucide="menu"></i>
+                </div>
             </div>
         </div>
     </header>
@@ -46,7 +49,7 @@
                 <h1 class="hero-title">Master Your Future with<br><span class="highlight">B.K. Singh Group.</span></h1>
                 <p class="hero-subtitle">India’s Elite Hub for MBA, CAT, and Professional Placement Excellence.</p>
                 <div class="hero-actions">
-                    <button class="btn btn-primary">Start Your Journey <i data-lucide="arrow-right"></i></button>
+                    <button id="startJourneyBtn" class="btn btn-primary">Start Your Journey <i data-lucide="arrow-right"></i></button>
                     <button class="btn btn-secondary">Explore Programs</button>
                 </div>
             </div>
@@ -124,6 +127,87 @@
                         <p class="module-desc">Master English grammar, reading, writing, and communication skills tailored for BSEB students.</p>
                     </div>
                     <div class="module-icon"><i data-lucide="languages"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Enrollment Tiers -->
+        <section class="pricing container">
+            <div class="section-header">
+                <h2>Course Enrollment Tiers</h2>
+                <p>Select your tier to unlock absolute academic and corporate dominance.</p>
+            </div>
+            <div class="pricing-grid grid-12">
+                <!-- Tier 1 -->
+                <div class="pricing-card glass-card interactive col-span-3">
+                    <div class="pricing-header">
+                        <span class="tier-label">Tier 01</span>
+                        <h3 class="pricing-title">Foundation Module</h3>
+                        <p class="pricing-subtitle">9th Class</p>
+                    </div>
+                    <div class="pricing-price cyber-green">₹500<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i data-lucide="check-circle-2"></i> Concept Clarity</li>
+                        <li><i data-lucide="check-circle-2"></i> Weekly Assessment</li>
+                        <li><i data-lucide="check-circle-2"></i> Mental Ability Training</li>
+                    </ul>
+                    <div class="pricing-action">
+                        <button class="btn btn-primary btn-block tier-signup-btn" data-tier="Foundation (9th)">Start Your Journey</button>
+                    </div>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="pricing-card glass-card interactive col-span-3">
+                    <div class="pricing-header">
+                        <span class="tier-label">Tier 02</span>
+                        <h3 class="pricing-title">Board Excellence</h3>
+                        <p class="pricing-subtitle">10th Class</p>
+                    </div>
+                    <div class="pricing-price cyber-green">₹800<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i data-lucide="check-circle-2"></i> Board Strategy</li>
+                        <li><i data-lucide="check-circle-2"></i> PYQ Analysis</li>
+                        <li><i data-lucide="check-circle-2"></i> Science & Math Mastery</li>
+                    </ul>
+                    <div class="pricing-action">
+                        <button class="btn btn-primary btn-block tier-signup-btn" data-tier="Board Excellence (10th)">Start Your Journey</button>
+                    </div>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="pricing-card glass-card interactive col-span-3">
+                    <div class="pricing-header">
+                        <span class="tier-label">Tier 03</span>
+                        <h3 class="pricing-title">Strategic Advanced Prep</h3>
+                        <p class="pricing-subtitle">11th Class</p>
+                    </div>
+                    <div class="pricing-price cyber-green">₹1,200<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i data-lucide="check-circle-2"></i> Entrance Foundation</li>
+                        <li><i data-lucide="check-circle-2"></i> Logical Reasoning</li>
+                        <li><i data-lucide="check-circle-2"></i> Profile Building</li>
+                    </ul>
+                    <div class="pricing-action">
+                        <button class="btn btn-primary btn-block tier-signup-btn" data-tier="Strategic Prep (11th)">Start Your Journey</button>
+                    </div>
+                </div>
+
+                <!-- Tier 4 -->
+                <div class="pricing-card glass-card interactive col-span-3">
+                    <div class="pricing-header">
+                        <span class="tier-label">Tier 04</span>
+                        <h3 class="pricing-title">Career Mastery</h3>
+                        <p class="pricing-subtitle">12th Class</p>
+                    </div>
+                    <div class="pricing-price cyber-green">₹1,500<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i data-lucide="check-circle-2"></i> Board Coaching</li>
+                        <li><i data-lucide="check-circle-2"></i> GD/PI Readiness</li>
+                        <li><i data-lucide="check-circle-2"></i> Mock Interviews</li>
+                    </ul>
+                    <div class="pricing-action">
+                        <button class="btn btn-primary btn-block tier-signup-btn" data-tier="Career Mastery (12th)">Start Your Journey</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -207,12 +291,109 @@
         </div>
     </footer>
 
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_c2FjcmVkLWxhbWItOTIuY2xlcmsuYWNjb3VudHMuZGV2JA"
+      src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+      onload="initClerk()"
+      type="text/javascript"
+    ></script>
+
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Dynamically get the right image extensions if filenames differ slightly 
-        // We know the pattern we used for cp
+        async function initClerk() {
+            try {
+                await window.Clerk.load({
+                    appearance: {
+                        variables: {
+                            colorPrimary: '#9EFF76', 
+                            colorBackground: '#1A1A1A',     
+                            colorText: '#FFFFFF',
+                            colorTextSecondary: '#A0A0A0',
+                            colorInputBackground: '#0D0D0D',
+                            colorInputText: '#FFFFFF',
+                            colorDanger: '#ff4444',
+                            borderRadius: '12px'
+                        },
+                        elements: {
+                            cardBox: {
+                                backgroundColor: 'rgba(13, 13, 13, 0.75)',
+                                backdropFilter: 'blur(24px)',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.8)'
+                            },
+                            card: {
+                                backgroundColor: 'transparent',
+                                boxShadow: 'none',
+                            },
+                            headerTitle: { color: '#FFFFFF', fontSize: '1.5rem', fontWeight: '800' },
+                            headerSubtitle: { color: '#A0A0A0' },
+                            formFieldInput: { 
+                                borderColor: 'rgba(255, 255, 255, 0.15)',
+                                backgroundColor: '#0D0D0D',
+                                boxShadow: 'none'
+                            },
+                            formButtonPrimary: { 
+                                backgroundColor: '#9EFF76', 
+                                color: '#0D0D0D', 
+                                fontWeight: '700',
+                                textTransform: 'uppercase'
+                            }
+                        }
+                    }
+                });
+
+                const startBtn = document.getElementById('startJourneyBtn');
+                const navLoginBtn = document.getElementById('navLoginBtn');
+                
+                // Update UI if logged in
+                if (window.Clerk.user) {
+                    if (startBtn) {
+                        startBtn.innerHTML = 'Go to Dashboard <i data-lucide="arrow-right"></i>';
+                        lucide.createIcons();
+                    }
+                    if (navLoginBtn) {
+                        navLoginBtn.style.display = 'none'; // Hide login button
+                    }
+                    
+                    const userContainer = document.getElementById('userBtnContainer');
+                    if (userContainer) {
+                        userContainer.style.display = 'block';
+                        window.Clerk.mountUserButton(userContainer);
+                    }
+                }
+
+                // Attach click handlers
+                const handleAuthClick = (e, metadata = null) => {
+                    e.preventDefault();
+                    if (window.Clerk.user) {
+                        document.querySelector('.pricing').scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        // Normally, metadata like 'tier' requires webhooks to push safely to Clerk user database.
+                        // Here we just trigger the signup modal locally.
+                        window.Clerk.openSignUp();
+                    }
+                };
+
+                if (startBtn) startBtn.addEventListener('click', handleAuthClick);
+                if (navLoginBtn) navLoginBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.Clerk.openSignIn();
+                });
+
+                const tierBtns = document.querySelectorAll('.tier-signup-btn');
+                tierBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        handleAuthClick(e, btn.getAttribute('data-tier'));
+                    });
+                });
+            } catch (err) {
+                console.error("Clerk Error:", err);
+            }
+        }
     </script>
 </body>
 </html>
