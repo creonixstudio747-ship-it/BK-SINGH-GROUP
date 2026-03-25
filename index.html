@@ -249,33 +249,89 @@
                 <p>Curated pathways to board mastery and academic dominance</p>
             </div>
             <div class="modules-grid grid-12">
-                <div class="module-card glass-card interactive col-span-6">
+                <div class="module-card glass-card interactive col-span-6" data-expertise="9th">
                     <div class="module-content">
                         <h3 class="module-title">Class 9th Foundation</h3>
                         <p class="module-desc">Build a rock-solid academic foundation with conceptual clarity and advanced reasoning skills.</p>
                     </div>
                     <div class="module-icon"><i data-lucide="book"></i></div>
                 </div>
-                <div class="module-card glass-card interactive col-span-6">
+                <div class="module-card glass-card interactive col-span-6" data-expertise="10th">
                     <div class="module-content">
                         <h3 class="module-title">Class 10th Board Mastery</h3>
                         <p class="module-desc">Strategic board exam preparation with specialized focus on scoring perfect percentiles.</p>
                     </div>
                     <div class="module-icon"><i data-lucide="book-open"></i></div>
                 </div>
-                <div class="module-card glass-card interactive col-span-6">
+                <div class="module-card glass-card interactive col-span-6" data-expertise="11th">
                     <div class="module-content">
                         <h3 class="module-title">Class 11th Advanced Concepts</h3>
                         <p class="module-desc">Deep-dive into specialized subjects logically structured for your intermediate educational journey.</p>
                     </div>
                     <div class="module-icon"><i data-lucide="compass"></i></div>
                 </div>
-                <div class="module-card glass-card interactive col-span-6">
+                <div class="module-card glass-card interactive col-span-6" data-expertise="12th">
                     <div class="module-content">
                         <h3 class="module-title">Class 12th Career & Board Excellence</h3>
                         <p class="module-desc">Comprehensive final board coaching paired with competitive entrance foundation readiness.</p>
                     </div>
                     <div class="module-icon"><i data-lucide="graduation-cap"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hierarchical Hub Section -->
+        <section class="hub-section container" id="learningHub">
+            <div class="hub-header">
+                <h2>Hierarchical Mock Test & Learning Hub</h2>
+                <div class="hub-board-toggle">
+                    <button class="board-btn active" data-board="CBSE">CBSE</button>
+                    <button class="board-btn" data-board="BSEB">BSEB</button>
+                </div>
+            </div>
+
+            <div class="hub-view-container glass-card interactive">
+                <!-- LEVEL 1: Classes -->
+                <div class="hub-panel active" id="panelLevel1">
+                    <div class="hub-grid grid-4" id="classGrid">
+                        <!-- Class Cards Dynamically Injected -->
+                    </div>
+                </div>
+
+                <!-- LEVEL 2: Subjects -->
+                <div class="hub-panel hidden-right" id="panelLevel2">
+                    <div class="hub-sub-header">
+                        <button class="btn-back" onclick="goLevel(1)"><i data-lucide="arrow-left"></i> Back to Classes</button>
+                        <h3 id="lblLevel2">Subjects</h3>
+                    </div>
+                    <div class="hub-grid grid-4" id="subjectGrid">
+                        <!-- Subject Cards -->
+                    </div>
+                </div>
+
+                <!-- LEVEL 3: Chapters -->
+                <div class="hub-panel hidden-right" id="panelLevel3">
+                    <div class="hub-sub-header">
+                        <button class="btn-back" onclick="goLevel(2)"><i data-lucide="arrow-left"></i> Back to Subjects</button>
+                        <h3 id="lblLevel3">Chapters</h3>
+                    </div>
+                    <div class="hub-list" id="chapterList">
+                        <!-- Chapter Items -->
+                    </div>
+                </div>
+
+                <!-- LEVEL 4: Action Hub -->
+                <div class="hub-panel hidden-right" id="panelLevel4">
+                    <div class="hub-sub-header">
+                        <button class="btn-back" onclick="goLevel(3)"><i data-lucide="arrow-left"></i> Back to Chapters</button>
+                        <h3 id="lblLevel4">Resource Dashboard</h3>
+                    </div>
+                    <div class="hub-grid grid-4" id="actionGrid">
+                        <div class="hub-card action-card"><i data-lucide="file-text"></i><span>Notes</span></div>
+                        <div class="hub-card action-card"><i data-lucide="help-circle"></i><span>Quiz</span></div>
+                        <div class="hub-card action-card"><i data-lucide="video"></i><span>Lectures</span></div>
+                        <div class="hub-card action-card"><i data-lucide="zap"></i><span>Extra Tips</span></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1041,6 +1097,227 @@
             ytModal.addEventListener("click", (e) => {
                 if (e.target === ytModal) closeModal();
             });
+        });
+    </script>
+
+    <!-- Expertise Details Modal -->
+    <div id="expertiseModal" class="cyber-modal">
+        <div class="cyber-modal-content glass-card">
+            <button id="expCloseBtn" class="modal-close-btn"><i data-lucide="x"></i></button>
+            <div class="exp-modal-header">
+                <div class="exp-icon"><i data-lucide="award"></i></div>
+                <h2 id="expModalTitle">Course Title</h2>
+            </div>
+            <div class="exp-features-container">
+                <ul id="expFeaturesList" class="exp-features-list">
+                    <!-- Fetched JS data here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPERTISE MODAL LOGIC -->
+    <script>
+        const expData = {
+            "9th": {
+                title: "Class 9th Foundation",
+                icon: "book",
+                features: [
+                    { icon: "brain-circuit", text: "Conceptual Clarity for Science & Math" },
+                    { icon: "award", text: "Olympiad & NTSE Preparation" },
+                    { icon: "file-check-2", text: "Weekly Foundation Tests" },
+                    { icon: "users", text: "Parent-Teacher Progress Sync" }
+                ]
+            },
+            "10th": {
+                title: "Class 10th Board Mastery",
+                icon: "book-open",
+                features: [
+                    { icon: "target", text: "Intensive Board Strategy Sessions" },
+                    { icon: "history", text: "10-Year PYQ Analysis" },
+                    { icon: "timer", text: "Subject-wise Mock Marathons" },
+                    { icon: "pen-tool", text: "Time Management & Answer Writing Workshops" }
+                ]
+            },
+            "11th": {
+                title: "Class 11th Advanced Concepts",
+                icon: "compass",
+                features: [
+                    { icon: "network", text: "Stream-specific Deep Dives (PCM/PCB/Commerce)" },
+                    { icon: "rocket", text: "Foundation for JEE/NEET/CAT" },
+                    { icon: "puzzle", text: "Advanced Problem Solving" },
+                    { icon: "map", text: "Career Mapping" }
+                ]
+            },
+            "12th": {
+                title: "Class 12th Career & Board Excellence",
+                icon: "graduation-cap",
+                features: [
+                    { icon: "crown", text: "Board Dominance Bootcamps" },
+                    { icon: "swords", text: "Competitive Entrance Readiness" },
+                    { icon: "briefcase", text: "Personality Development & Placement Support" },
+                    { icon: "compass", text: "Final Career Counseling" }
+                ]
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const expCards = document.querySelectorAll('.module-card');
+            const expModal = document.getElementById('expertiseModal');
+            const expCloseBtn = document.getElementById('expCloseBtn');
+            const expModalTitle = document.getElementById('expModalTitle');
+            const expFeaturesList = document.getElementById('expFeaturesList');
+            const expIconContainer = document.querySelector('.exp-icon');
+
+            expCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const key = card.getAttribute('data-expertise');
+                    if(!key || !expData[key]) return;
+                    const data = expData[key];
+                    
+                    expModalTitle.innerText = data.title;
+                    expIconContainer.innerHTML = `<i data-lucide="${data.icon}"></i>`;
+                    expFeaturesList.innerHTML = data.features.map(f => `
+                        <li><i data-lucide="${f.icon}"></i> <span>${f.text}</span></li>
+                    `).join('');
+                    
+                    if (window.lucide) window.lucide.createIcons();
+                    
+                    expModal.classList.add('active');
+                    document.body.style.overflow = "hidden";
+                });
+            });
+
+            const closeExpModal = () => {
+                expModal.classList.remove('active');
+                document.body.style.overflow = "";
+            };
+
+            expCloseBtn.addEventListener('click', closeExpModal);
+            expModal.addEventListener('click', (e) => {
+                if (e.target === expModal) closeExpModal();
+            });
+        });
+    </script>
+
+    <!-- HIERARCHICAL HUB LOGIC -->
+    <script>
+        const hubState = { board: 'CBSE', level: 1, class: null, subject: null, chapter: null };
+
+        function renderHub() {
+            // Manage Panel Visibility using CSS classes (translate3d)
+            document.querySelectorAll('.hub-panel').forEach(p => {
+                p.classList.remove('active', 'hidden-left', 'hidden-right');
+                const pLevel = parseInt(p.id.replace('panelLevel', ''));
+                if (pLevel === hubState.level) {
+                    p.classList.add('active');
+                } else if (pLevel < hubState.level) {
+                    p.classList.add('hidden-left');
+                } else {
+                    p.classList.add('hidden-right');
+                }
+            });
+
+            if (hubState.level === 1) renderClasses();
+            if (hubState.level === 2) renderSubjects();
+            if (hubState.level === 3) renderChapters();
+            if (hubState.level === 4) renderActions();
+            
+            // Re-initialize Lucide Icons
+            if(window.lucide) {
+                setTimeout(() => lucide.createIcons(), 10);
+            }
+        }
+
+        function renderClasses() {
+            const grid = document.getElementById('classGrid');
+            const classes = ["9th Class", "10th Class", "11th Class", "12th Class"];
+            grid.innerHTML = classes.map(c => `
+                <div class="hub-card" onclick="selectClass('${c}')">
+                    <i data-lucide="graduation-cap"></i>
+                    <span>${c}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectClass(c) {
+            hubState.class = c;
+            hubState.level = 2;
+            renderHub();
+        }
+
+        function renderSubjects() {
+            const grid = document.getElementById('subjectGrid');
+            document.getElementById('lblLevel2').innerText = `${hubState.board} > ${hubState.class} Subjects`;
+            
+            // Mock dynamic subjects based on Class and Board
+            let subjects = ["Mathematics", "Science", "Social Science", "English", "Hindi"];
+            if(hubState.class.includes("11") || hubState.class.includes("12")) {
+                subjects = ["Physics", "Chemistry", "Mathematics", "Biology", "English"];
+            }
+            if(hubState.board === "BSEB") {
+                subjects.push("BSEB Specific Rules");
+            }
+
+            grid.innerHTML = subjects.map(s => `
+                <div class="hub-card" onclick="selectSubject('${s}')">
+                    <i data-lucide="book-open"></i>
+                    <span>${s}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectSubject(s) {
+            hubState.subject = s;
+            hubState.level = 3;
+            renderHub();
+        }
+
+        function renderChapters() {
+            const list = document.getElementById('chapterList');
+            document.getElementById('lblLevel3').innerText = `${hubState.subject} Chapters`;
+            const chapters = [
+                "Chapter 1: Foundations and Basics", 
+                "Chapter 2: Core Concepts and Applications", 
+                "Chapter 3: Advanced Problems and Mock Tests",
+                "Chapter 4: Previous Year Question (PYQ) Analysis"
+            ];
+            list.innerHTML = chapters.map((ch, i) => `
+                <div class="hub-list-item" onclick="selectChapter('${ch}')">
+                    <span><b>0${i+1}.</b> ${ch}</span>
+                    <i data-lucide="chevron-right"></i>
+                </div>
+            `).join('');
+        }
+
+        function selectChapter(ch) {
+            hubState.chapter = ch;
+            hubState.level = 4;
+            renderHub();
+        }
+
+        function renderActions() {
+            document.getElementById('lblLevel4').innerText = `${hubState.chapter} Resources`;
+        }
+
+        function goLevel(lvl) {
+            hubState.level = lvl;
+            renderHub();
+        }
+
+        document.querySelectorAll('.board-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.board-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                hubState.board = e.target.dataset.board;
+                hubState.level = 1;
+                renderHub();
+            });
+        });
+
+        // Initialize App Hub
+        document.addEventListener("DOMContentLoaded", () => {
+            renderHub();
         });
     </script>
 </body>
