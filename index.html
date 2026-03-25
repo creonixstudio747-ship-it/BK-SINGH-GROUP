@@ -539,17 +539,16 @@
                     </a>
 
                     <div class="photo-gallery" id="campusGallery">
-                        <!-- Populated dynamically from Sheet -->
-                        <div class="gallery-item" onclick="openLightbox('assets/side.jpg')">
-                            <img src="assets/side.jpg" alt="Front entrance view">
+                        <div class="gallery-item" onclick="openLightbox('assets/location1.jpg')">
+                            <img src="assets/location1.jpg" alt="Visit the B.K. Singh Hub - Location Photo 1">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
                         </div>
-                        <div class="gallery-item" onclick="openLightbox('assets/outerside.jpg')">
-                            <img src="assets/outerside.jpg" alt="Wide side exterior view">
+                        <div class="gallery-item" onclick="openLightbox('assets/location2.jpg')">
+                            <img src="assets/location2.jpg" alt="Visit the B.K. Singh Hub - Location Photo 2">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
                         </div>
-                        <div class="gallery-item" onclick="openLightbox('assets/poster.jpg')">
-                            <img src="assets/poster.jpg" alt="Close-up of billboard">
+                        <div class="gallery-item" onclick="openLightbox('assets/location3.jpg')">
+                            <img src="assets/location3.jpg" alt="Visit the B.K. Singh Hub - Location Photo 3">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
                         </div>
                     </div>
@@ -2192,7 +2191,7 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
                         </div>
                     `;
                 }).join('');
-                if (html) campusGrid.innerHTML = html;
+                // if (html) campusGrid.innerHTML = html; // Disabled to use hardcoded left/right images
             }
 
             if (libraryData.length > 0) {
