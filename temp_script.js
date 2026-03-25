@@ -1,676 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B.K. Singh Classes | The Gold Standard of Academic Excellence</title>
-    <meta name="description" content="India's Elite Learning Ecosystem for Classes 9th to 12th.">
-    <link rel="stylesheet" href="style.css?v=2">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-
-<body>
-    <!-- Background Elements -->
-    <div class="bg-noise"></div>
-    <div class="bg-glow blob-1"></div>
-    <div class="bg-glow blob-2"></div>
-
-    <!-- Minimalist Navigation -->
-    <header class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <i data-lucide="hexagon" class="logo-icon"></i>
-                <span>B.K. SINGH CLASSES</span>
-            </div>
-            <nav class="nav-links">
-                <a href="#" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-                <a href="#" class="nav-item"><i data-lucide="book-open"></i> My Courses</a>
-                <a href="#" class="nav-item"><i data-lucide="file-check-2"></i> Mock Tests</a>
-                <a href="#" class="nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
-                <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
-            </nav>
-            <div class="nav-actions" style="display: flex; align-items: center; gap: 1rem;">
-                <a id="navLoginBtn" href="#" class="nav-login-cyber"><i data-lucide="user"></i> Login / Sign Up</a>
-
-                <!-- Custom Profile Dropdown Container -->
-                <div id="customProfileContainer" class="custom-profile-container hidden" style="display: none;">
-                    <button id="profileToggleBtn" class="profile-toggle-btn">
-                        <img id="profileAvatar" src="" alt="Avatar" class="profile-avatar">
-                        <span id="profileFirstName" class="profile-first-name">User</span>
-                        <i data-lucide="chevron-down" class="profile-chevron"></i>
-                    </button>
-                    <!-- Glassmorphism Dropdown -->
-                    <div id="profileDropdown" class="profile-dropdown">
-                        <div class="profile-dropdown-header">
-                            <h4 id="profileFullName">User Name</h4>
-                            <p id="profileContact">user@example.com</p>
-                        </div>
-                        <div class="profile-dropdown-body">
-                            <div class="input-group" style="margin-bottom: 0;">
-                                <label for="gradeSelect">Curriculum Grade</label>
-                                <select id="gradeSelect" class="auth-input cyber-select">
-                                    <option value="" disabled selected>Select your Class</option>
-                                    <option value="Class 6">Class 6</option>
-                                    <option value="Class 7">Class 7</option>
-                                    <option value="Class 8">Class 8</option>
-                                    <option value="Class 9">Class 9</option>
-                                    <option value="Class 10">Class 10</option>
-                                    <option value="Class 11">Class 11</option>
-                                    <option value="Class 12">Class 12</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="profile-dropdown-footer">
-                            <button id="logoutBtn" class="logout-btn"><i data-lucide="log-out"></i> Sign Out</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mobile-menu-btn" id="mobileMenuBtn">
-                    <i data-lucide="menu"></i>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenu">
-        <div class="mobile-menu-close" id="mobileMenuClose">
-            <i data-lucide="x"></i>
-        </div>
-        <nav class="mobile-nav-links">
-            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="book-open"></i> My Courses</a>
-            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="file-check-2"></i> Mock Tests</a>
-            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
-            <a href="#" class="nav-item mobile-nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
-            <a id="mobileLoginBtn" href="#" class="btn btn-primary"
-                style="margin-top: 1rem; padding: 0.5rem 1.25rem; font-size: 1rem; background-color: #9EFF76; color: #0D0D0D; font-weight: bold;"><i
-                    data-lucide="user"></i> Login / Sign Up</a>
-        </nav>
-    </div>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="hero container">
-            <div class="hero-content">
-                <div class="badge">Elevate Your Career</div>
-                <h1 class="hero-title">B.K. Singh Classes:<br><span class="highlight">The Gold Standard of Academic
-                        Excellence.</span></h1>
-                <p class="hero-subtitle">India’s Elite Learning Ecosystem for Classes 9th to 12th. Master your School
-                    Boards and Competitive Foundations with Precision and Luxury.</p>
-                <div class="hero-actions">
-                    <button id="startJourneyBtn" class="btn btn-primary">Start Your Journey <i
-                            data-lucide="arrow-right"></i></button>
-                    <button class="btn btn-secondary">Explore Programs</button>
-                </div>
-            </div>
-            <div class="dashboard-live-ui glass-card interactive">
-                <div class="dashboard-nav">
-                    <div class="dash-logo">
-                        <i data-lucide="graduation-cap"></i> B.K. Singh Classes
-                    </div>
-                    <div class="dash-links">
-                        <span class="active"><i data-lucide="layout-dashboard"></i> Dashboard</span>
-                        <span><i data-lucide="book-open"></i> My Courses</span>
-                        <span><i data-lucide="file-check-2"></i> Mock Tests</span>
-                        <span><i data-lucide="briefcase"></i> Placement</span>
-                        <span><i data-lucide="pie-chart"></i> Analytics</span>
-                    </div>
-                    <div class="dash-user">
-                        <div class="dash-avatar"><i data-lucide="user"></i></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-grid">
-                    <!-- Section A: Activity Overview -->
-                    <div class="dash-panel panel-a">
-                        <h4>Student Activity Overview</h4>
-                        <div class="panel-a-content">
-                            <div class="chart-wavy">
-                                <svg viewBox="0 0 200 80" preserveAspectRatio="none">
-                                    <defs>
-                                        <linearGradient id="glowG" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="0%" stop-color="#9EFF76" stop-opacity="0.4" />
-                                            <stop offset="100%" stop-color="#9EFF76" stop-opacity="0.0" />
-                                        </linearGradient>
-                                    </defs>
-                                    <rect x="20" y="30" width="8" height="50" fill="rgba(158,255,118,0.15)" />
-                                    <rect x="60" y="20" width="8" height="60" fill="rgba(158,255,118,0.15)" />
-                                    <rect x="100" y="40" width="8" height="40" fill="rgba(158,255,118,0.15)" />
-                                    <rect x="140" y="10" width="8" height="70" fill="rgba(158,255,118,0.15)" />
-                                    <rect x="180" y="25" width="8" height="55" fill="rgba(158,255,118,0.15)" />
-                                    <path d="M0,60 C40,20 60,70 100,40 C140,10 160,50 200,30 L200,80 L0,80 Z"
-                                        fill="url(#glowG)" />
-                                    <path d="M0,60 C40,20 60,70 100,40 C140,10 160,50 200,30" fill="none"
-                                        stroke="#9EFF76" stroke-width="2"
-                                        style="filter: drop-shadow(0 0 4px rgba(158,255,118,0.8));" />
-                                </svg>
-                            </div>
-                            <div class="gauge-wrap">
-                                <svg viewBox="0 0 36 36" class="circular-chart">
-                                    <path class="circle-bg"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <path class="circle" stroke-dasharray="92, 100"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    <text x="18" y="20.35" class="percentage">92%</text>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section B: Performance Metrics -->
-                    <div class="dash-panel panel-b">
-                        <h4>Performance Metrics</h4>
-                        <div class="radar-charts">
-                            <svg viewBox="0 0 100 100" class="radar">
-                                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="none"
-                                    stroke="rgba(255,255,255,0.1)" />
-                                <polygon points="50,20 75,35 75,65 50,80 25,65 25,35" fill="none"
-                                    stroke="rgba(255,255,255,0.1)" />
-                                <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(255,255,255,0.1)" />
-                                <line x1="10" y1="27.5" x2="90" y2="72.5" stroke="rgba(255,255,255,0.1)" />
-                                <line x1="90" y1="27.5" x2="10" y2="72.5" stroke="rgba(255,255,255,0.1)" />
-                                <polygon points="50,15 80,35 70,65 50,85 20,60 30,30" fill="rgba(158,255,118,0.2)"
-                                    stroke="#9EFF76" stroke-width="1.5" style="filter:drop-shadow(0 0 4px #9EFF76);" />
-                            </svg>
-                            <svg viewBox="0 0 100 100" class="radar">
-                                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="none"
-                                    stroke="rgba(255,255,255,0.1)" />
-                                <polygon points="50,20 75,35 75,65 50,80 25,65 25,35" fill="none"
-                                    stroke="rgba(255,255,255,0.1)" />
-                                <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(255,255,255,0.1)" />
-                                <line x1="10" y1="27.5" x2="90" y2="72.5" stroke="rgba(255,255,255,0.1)" />
-                                <line x1="90" y1="27.5" x2="10" y2="72.5" stroke="rgba(255,255,255,0.1)" />
-                                <polygon points="50,30 85,30 80,70 50,75 30,60 15,40" fill="rgba(79,70,229,0.3)"
-                                    stroke="#4F46E5" stroke-width="1.5" style="filter:drop-shadow(0 0 4px #4F46E5);" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Section C: Course Completion Status -->
-                    <div class="dash-panel panel-c">
-                        <h4>Course Completion Status</h4>
-                        <div class="course-status-grid">
-                            <div class="status-ring"><svg viewBox="0 0 36 36">
-                                    <path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" />
-                                    <path class="circle" stroke-dasharray="100,100"
-                                        d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" /><text x="18"
-                                        y="21">100%</text>
-                                </svg></div>
-                            <div class="status-ring"><svg viewBox="0 0 36 36">
-                                    <path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" />
-                                    <path class="circle" stroke-dasharray="30,100" style="stroke: #4F46E5;"
-                                        d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" /><text x="18"
-                                        y="21">30%</text>
-                                </svg></div>
-                            <div class="status-ring"><svg viewBox="0 0 36 36">
-                                    <path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" />
-                                    <path class="circle" stroke-dasharray="50,100" style="stroke: #4F46E5;"
-                                        d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" /><text x="18"
-                                        y="21">50%</text>
-                                </svg></div>
-                            <div class="status-ring"><svg viewBox="0 0 36 36">
-                                    <path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" />
-                                    <path class="circle" stroke-dasharray="70,100"
-                                        d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32" /><text x="18"
-                                        y="21">70%</text>
-                                </svg></div>
-                            <div class="status-bars">
-                                <div class="bar-col">
-                                    <div class="bar-fill" style="height: 10%"></div>
-                                </div>
-                                <div class="bar-col">
-                                    <div class="bar-fill"
-                                        style="height: 50%; background: #4F46E5; box-shadow: 0 0 8px rgba(79,70,229,0.6);">
-                                    </div>
-                                </div>
-                                <div class="bar-col">
-                                    <div class="bar-fill" style="height: 70%"></div>
-                                </div>
-                                <div class="bar-col">
-                                    <div class="bar-fill" style="height: 100%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section D: Learning Modules & Activity -->
-                    <div class="dash-panel panel-d">
-                        <div class="learning-modules">
-                            <h4>Top Learning Modules</h4>
-                            <div class="lm-item"><i data-lucide="book"></i> <span>Physics Board Prep</span></div>
-                            <div class="lm-item"><i data-lucide="calculator"></i> <span>Math Advanced</span></div>
-                        </div>
-                        <div class="activity-feed">
-                            <h4>Recent Activity Feed</h4>
-                            <div class="af-item"><i data-lucide="play-circle"></i> <span>Completed "Limits &
-                                    Deriv."</span> <span class="badge-done"><i data-lucide="check-circle-2"></i></span>
-                            </div>
-                            <div class="af-item"><i data-lucide="play-circle"></i> <span>Started "Macroeconomics"</span>
-                                <span class="badge-done" style="color: #4F46E5;"><i data-lucide="clock"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Global Impact Stats -->
-        <section class="stats container">
-            <div class="stats-grid grid-12">
-                <div class="stat-card glass-card interactive col-span-3">
-                    <div class="stat-icon cyber-green">
-                        <i data-lucide="trending-up"></i>
-                    </div>
-                    <div class="stat-value">15.2K+</div>
-                    <div class="stat-label">Successful Placements</div>
-                </div>
-                <div class="stat-card glass-card interactive col-span-3">
-                    <div class="stat-icon cyber-green">
-                        <i data-lucide="users"></i>
-                    </div>
-                    <div class="stat-value">27.5K+</div>
-                    <div class="stat-label">Active Aspirants</div>
-                </div>
-                <div class="stat-card glass-card interactive col-span-3">
-                    <div class="stat-icon cyber-green">
-                        <i data-lucide="target"></i>
-                    </div>
-                    <div class="stat-value">98.4%</div>
-                    <div class="stat-label">Success Ratio</div>
-                </div>
-                <div class="stat-card glass-card interactive col-span-3">
-                    <div class="stat-icon cyber-green">
-                        <i data-lucide="award"></i>
-                    </div>
-                    <div class="stat-value">20+ Years</div>
-                    <div class="stat-label">Educational Excellence</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Premium Course Modules -->
-        <section class="modules container">
-            <div class="section-header">
-                <h2>Our Expertise</h2>
-                <p>Curated pathways to board mastery and academic dominance</p>
-            </div>
-            <div class="modules-grid grid-12">
-                <div class="module-card glass-card interactive col-span-6" data-expertise="9th">
-                    <div class="module-content">
-                        <h3 class="module-title">Class 9th Foundation</h3>
-                        <p class="module-desc">Build a rock-solid academic foundation with conceptual clarity and
-                            advanced reasoning skills.</p>
-                    </div>
-                    <div class="module-icon"><i data-lucide="book"></i></div>
-                </div>
-                <div class="module-card glass-card interactive col-span-6" data-expertise="10th">
-                    <div class="module-content">
-                        <h3 class="module-title">Class 10th Board Mastery</h3>
-                        <p class="module-desc">Strategic board exam preparation with specialized focus on scoring
-                            perfect percentiles.</p>
-                    </div>
-                    <div class="module-icon"><i data-lucide="book-open"></i></div>
-                </div>
-                <div class="module-card glass-card interactive col-span-6" data-expertise="11th">
-                    <div class="module-content">
-                        <h3 class="module-title">Class 11th Advanced Concepts</h3>
-                        <p class="module-desc">Deep-dive into specialized subjects logically structured for your
-                            intermediate educational journey.</p>
-                    </div>
-                    <div class="module-icon"><i data-lucide="compass"></i></div>
-                </div>
-                <div class="module-card glass-card interactive col-span-6" data-expertise="12th">
-                    <div class="module-content">
-                        <h3 class="module-title">Class 12th Career & Board Excellence</h3>
-                        <p class="module-desc">Comprehensive final board coaching paired with competitive entrance
-                            foundation readiness.</p>
-                    </div>
-                    <div class="module-icon"><i data-lucide="graduation-cap"></i></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hierarchical Hub Section -->
-        <section class="hub-section container" id="learningHub">
-            <div class="hub-header">
-                <h2>Hierarchical Mock Test & Learning Hub</h2>
-                <div class="hub-board-toggle">
-                    <button class="board-btn active" data-board="CBSE">CBSE</button>
-                    <button class="board-btn" data-board="BSEB">BSEB</button>
-                </div>
-            </div>
-
-            <div class="hub-view-container glass-card interactive">
-                <!-- LEVEL 1: Classes -->
-                <div class="hub-panel active" id="panelLevel1">
-                    <div class="hub-grid grid-4" id="classGrid">
-                        <!-- Class Cards Dynamically Injected -->
-                    </div>
-                </div>
-
-                <!-- LEVEL 2: Subjects -->
-                <div class="hub-panel hidden-right" id="panelLevel2">
-                    <div class="hub-sub-header">
-                        <button class="btn-back" onclick="goLevel(1)"><i data-lucide="arrow-left"></i> Back</button>
-                        <h3 id="lblLevel2" class="breadcrumb-text">Subjects</h3>
-                    </div>
-                    <div class="hub-grid grid-4" id="subjectGrid">
-                        <!-- Subject Cards -->
-                    </div>
-                </div>
-
-                <!-- LEVEL 3: Sub-Subjects (Social Science Only) -->
-                <div class="hub-panel hidden-right" id="panelLevel3">
-                    <div class="hub-sub-header">
-                        <button class="btn-back" onclick="goLevel(2)"><i data-lucide="arrow-left"></i> Back</button>
-                        <h3 id="lblLevel3" class="breadcrumb-text">Sub-Subjects</h3>
-                    </div>
-                    <div class="hub-grid grid-4" id="subSubjectGrid">
-                        <!-- Sub-subject Cards -->
-                    </div>
-                </div>
-
-                <!-- LEVEL 4: Chapters -->
-                <div class="hub-panel hidden-right" id="panelLevel4">
-                    <div class="hub-sub-header">
-                        <button class="btn-back" onclick="goBackFromChapters()"><i data-lucide="arrow-left"></i>
-                            Back</button>
-                        <h3 id="lblLevel4" class="breadcrumb-text">Chapters</h3>
-                    </div>
-                    <div class="hub-list" id="chapterList">
-                        <!-- Chapter Items -->
-                    </div>
-                </div>
-
-                <!-- LEVEL 5: Action Hub -->
-                <div class="hub-panel hidden-right" id="panelLevel5">
-                    <div class="hub-sub-header">
-                        <button class="btn-back" onclick="goLevel(4)"><i data-lucide="arrow-left"></i> Back</button>
-                        <h3 id="lblLevel5" class="breadcrumb-text">Resource Dashboard</h3>
-                    </div>
-                    <div class="hub-grid grid-5" id="actionGrid">
-                        <div class="hub-card action-card"><i data-lucide="file-text"></i><span>Notes</span></div>
-                        <div class="hub-card action-card"><i data-lucide="history"></i><span>Previous Year
-                                Questions</span></div>
-                        <div class="hub-card action-card"><i data-lucide="video"></i><span>Lectures</span></div>
-                        <div class="hub-card action-card"><i data-lucide="help-circle"></i><span>Quiz</span></div>
-                        <div class="hub-card action-card"><i data-lucide="zap"></i><span>Some Extra Tips</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Course Enrollment Tiers -->
-        <section class="pricing container">
-            <div class="section-header">
-                <h2>Course Enrollment Tiers</h2>
-                <p>Select your tier to unlock absolute academic and corporate dominance.</p>
-            </div>
-            <div class="pricing-grid grid-12">
-                <!-- Tier 1 -->
-                <div class="pricing-card glass-card interactive col-span-3">
-                    <div class="pricing-header">
-                        <span class="tier-label">Tier 01</span>
-                        <h3 class="pricing-title">Foundation Module</h3>
-                        <p class="pricing-subtitle">9th Class</p>
-                    </div>
-                    <div class="pricing-price cyber-green">₹500<span>/mo</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check-circle-2"></i> Concept Clarity</li>
-                        <li><i data-lucide="check-circle-2"></i> Weekly Assessment</li>
-                        <li><i data-lucide="check-circle-2"></i> Mental Ability Training</li>
-                    </ul>
-                    <div class="pricing-action">
-                        <button class="btn btn-primary btn-block tier-signup-btn" data-tier="Foundation (9th)">Start
-                            Your Journey</button>
-                    </div>
-                </div>
-
-                <!-- Tier 2 -->
-                <div class="pricing-card glass-card interactive col-span-3">
-                    <div class="pricing-header">
-                        <span class="tier-label">Tier 02</span>
-                        <h3 class="pricing-title">Board Excellence</h3>
-                        <p class="pricing-subtitle">10th Class</p>
-                    </div>
-                    <div class="pricing-price cyber-green">₹800<span>/mo</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check-circle-2"></i> Board Strategy</li>
-                        <li><i data-lucide="check-circle-2"></i> PYQ Analysis</li>
-                        <li><i data-lucide="check-circle-2"></i> Science & Math Mastery</li>
-                    </ul>
-                    <div class="pricing-action">
-                        <button class="btn btn-primary btn-block tier-signup-btn"
-                            data-tier="Board Excellence (10th)">Start Your Journey</button>
-                    </div>
-                </div>
-
-                <!-- Tier 3 -->
-                <div class="pricing-card glass-card interactive col-span-3">
-                    <div class="pricing-header">
-                        <span class="tier-label">Tier 03</span>
-                        <h3 class="pricing-title">Strategic Advanced Prep</h3>
-                        <p class="pricing-subtitle">11th Class</p>
-                    </div>
-                    <div class="pricing-price cyber-green">₹1,200<span>/mo</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check-circle-2"></i> Entrance Foundation</li>
-                        <li><i data-lucide="check-circle-2"></i> Logical Reasoning</li>
-                        <li><i data-lucide="check-circle-2"></i> Profile Building</li>
-                    </ul>
-                    <div class="pricing-action">
-                        <button class="btn btn-primary btn-block tier-signup-btn"
-                            data-tier="Strategic Prep (11th)">Start Your Journey</button>
-                    </div>
-                </div>
-
-                <!-- Tier 4 -->
-                <div class="pricing-card glass-card interactive col-span-3">
-                    <div class="pricing-header">
-                        <span class="tier-label">Tier 04</span>
-                        <h3 class="pricing-title">Career Mastery</h3>
-                        <p class="pricing-subtitle">12th Class</p>
-                    </div>
-                    <div class="pricing-price cyber-green">₹1,500<span>/mo</span></div>
-                    <ul class="pricing-features">
-                        <li><i data-lucide="check-circle-2"></i> Board Coaching</li>
-                        <li><i data-lucide="check-circle-2"></i> GD/PI Readiness</li>
-                        <li><i data-lucide="check-circle-2"></i> Mock Interviews</li>
-                    </ul>
-                    <div class="pricing-action">
-                        <button class="btn btn-primary btn-block tier-signup-btn"
-                            data-tier="Career Mastery (12th)">Start Your Journey</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Latest Lectures & Vlogs Feed -->
-        <section class="youtube-feed container" id="youtubeSection">
-            <div class="section-header">
-                <h2>Latest Lectures & Vlogs</h2>
-                <p>Stay updated with our newest educational content and insights</p>
-            </div>
-            <div id="youtubeFeedGrid" class="feed-grid grid-12">
-                <!-- Videos will be injected here via JS -->
-                <div class="loader cyber-green" style="grid-column: span 12; text-align: center; padding: 2rem;">Loading
-                    latest videos <i data-lucide="loader-2" class="spinning"></i></div>
-            </div>
-        </section>
-
-        <!-- YouTube Lightbox Modal -->
-        <div id="youtubeModal" class="yt-modal-overlay">
-            <div class="yt-modal-content">
-                <button class="yt-close-btn" id="ytCloseBtn"><i data-lucide="x"></i></button>
-                <div class="yt-iframe-container" id="ytIframeContainer"></div>
-            </div>
-        </div>
-
-        <!-- Methodology -->
-        <section class="methodology container">
-            <div class="section-header">
-                <h2>The B.K. Singh Methodology</h2>
-                <p>A proven, systematic progression framework</p>
-            </div>
-            <div class="methodology-steps">
-                <div class="step">
-                    <div class="step-circle glass-card">01</div>
-                    <div class="step-title">Profile Assessment</div>
-                </div>
-                <div class="step-arrow"><i data-lucide="chevron-right"></i></div>
-                <div class="step">
-                    <div class="step-circle glass-card">02</div>
-                    <div class="step-title">Conceptual Foundations</div>
-                </div>
-                <div class="step-arrow"><i data-lucide="chevron-right"></i></div>
-                <div class="step">
-                    <div class="step-circle glass-card">03</div>
-                    <div class="step-title">Rigorous Testing</div>
-                </div>
-                <div class="step-arrow"><i data-lucide="chevron-right"></i></div>
-                <div class="step">
-                    <div class="step-circle glass-card">04</div>
-                    <div class="step-title">Personality Refinement</div>
-                </div>
-                <div class="step-arrow"><i data-lucide="chevron-right"></i></div>
-                <div class="step">
-                    <div class="step-circle glass-card cyber-focus">05</div>
-                    <div class="step-title cyber-text">Final Placement</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Founding Leadership -->
-        <section class="leadership container">
-            <div class="mentor-profile glass-card">
-                <div class="mentor-image-wrapper">
-                    <img id="mentorImg" src="assets/bksingh.jpg" alt="B.K. Singh, Founder & Chief Mentor"
-                        class="mentor-image">
-                    <div class="mentor-glow"></div>
-                </div>
-                <div class="mentor-details">
-                    <div class="mentor-header">
-                        <h2>B.K. Singh</h2>
-                        <span class="mentor-title">Founder & Chief Mentor</span>
-                    </div>
-                    <div class="persona-section">
-                        <div class="persona-card glass-card-inner">
-                            <h4><i data-lucide="zap" class="cyber-green-icon"></i> Needs</h4>
-                            <ul>
-                                <li>Strategic Excellence in Education</li>
-                                <li>Data-Driven Assessment Frameworks</li>
-                                <li>Holistic Student Transformation</li>
-                            </ul>
-                        </div>
-                        <div class="persona-card glass-card-inner">
-                            <h4><i data-lucide="alert-triangle" class="warn-icon"></i> Pain Points Solved</h4>
-                            <ul>
-                                <li>Standardized Education Gaps</li>
-                                <li>Lack of Industry-Ready Skills</li>
-                                <li>Inconsistent Assessment Models</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Custom Auth Modal overlay -->
-        <div id="customAuthModal" class="auth-modal-overlay">
-            <div class="auth-modal glass-card">
-                <button class="auth-close-btn" id="authCloseBtn"><i data-lucide="x"></i></button>
-                <div class="auth-modal-header">
-                    <i data-lucide="hexagon" class="logo-icon cyber-green"></i>
-                    <h2>Access Portal</h2>
-                    <p id="authSubtitle">Select your preferred authentication method.</p>
-                </div>
-
-                <!-- State 1: 4 Buttons -->
-                <div id="authStateMethods" class="auth-state active">
-                    <button class="auth-btn" id="btnGoogle">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="monochrome-icon">
-                            <path
-                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                            <path
-                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                            <path
-                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                            <path
-                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                        </svg>
-                        Continue with Google
-                    </button>
-                    <button class="auth-btn" id="btnFacebook">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="monochrome-icon">
-                            <path
-                                d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14-2.857 0-4.8 1.74-4.8 4.96v2.54H7.5v4h2.343v10.5h4.157v-10.5z" />
-                        </svg> Continue with Facebook
-                    </button>
-                    <div class="auth-divider"><span>OR</span></div>
-                    <button class="auth-btn" id="btnPhone">
-                        <i data-lucide="phone"></i> Login with Phone
-                    </button>
-                    <button class="auth-btn" id="btnEmail">
-                        <i data-lucide="mail"></i> Login with Email
-                    </button>
-                </div>
-
-                <!-- State 2: Input (Phone/Email) -->
-                <div id="authStateInput" class="auth-state hidden" style="display: none;">
-                    <form id="authInputForm">
-                        <div class="input-group">
-                            <label id="authInputLabel" for="authInputField">Email Address</label>
-                            <input type="text" id="authInputField" class="auth-input"
-                                placeholder="Enter your details..." required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block" id="btnSendCode">Send Verification Code
-                            <i data-lucide="arrow-right"></i></button>
-                    </form>
-                    <button class="btn btn-secondary btn-block auth-back-btn" id="btnBackToMethods"
-                        style="margin-top: 1rem;">Back to Methods</button>
-                </div>
-
-                <!-- State 3: OTP Verify -->
-                <div id="authStateVerify" class="auth-state hidden" style="display: none;">
-                    <form id="authVerifyForm">
-                        <div class="input-group">
-                            <label for="authOtpField">Verification Code (6-digit)</label>
-                            <input type="text" id="authOtpField" class="auth-input otp-input" placeholder="000000"
-                                maxlength="6" required>
-                        </div>
-                        <button type="submit" class="btn btn-verify btn-block" id="btnVerifyOTP">Verify & Login</button>
-                    </form>
-                    <button class="btn btn-secondary btn-block auth-back-btn" id="btnBackToInput"
-                        style="margin-top: 1rem;">Go Back</button>
-                </div>
-
-                <div id="authErrorBox" class="auth-error-box hidden" style="display: none;"></div>
-            </div>
-        </div>
-
-    </main>
-    <footer>
-        <div class="container footer-content border-top glass-panel">
-            <div class="logo">
-                <i data-lucide="hexagon" class="logo-icon cyber-green"></i>
-                <span>B.K. SINGH CLASSES</span>
-            </div>
-            <p class="copyright">&copy; 2026 B.K. Singh Classes. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script async crossorigin="anonymous"
-        data-clerk-publishable-key="pk_test_c2FjcmVkLWxhbWItOTIuY2xlcmsuYWNjb3VudHMuZGV2JA"
-        src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js" onload="initClerk()"
-        type="text/javascript"></script>
-
-    <script>
         // Initialize Lucide icons
         lucide.createIcons();
 
@@ -679,8 +6,8 @@
                 await window.Clerk.load({
                     appearance: {
                         variables: {
-                            colorPrimary: '#9EFF76',
-                            colorBackground: '#1A1A1A',
+                            colorPrimary: '#9EFF76', 
+                            colorBackground: '#1A1A1A',     
                             colorText: '#FFFFFF',
                             colorTextSecondary: '#A0A0A0',
                             colorInputBackground: '#0D0D0D',
@@ -701,14 +28,14 @@
                             },
                             headerTitle: { color: '#FFFFFF', fontSize: '1.5rem', fontWeight: '800' },
                             headerSubtitle: { color: '#A0A0A0' },
-                            formFieldInput: {
+                            formFieldInput: { 
                                 borderColor: 'rgba(255, 255, 255, 0.15)',
                                 backgroundColor: '#0D0D0D',
                                 boxShadow: 'none'
                             },
-                            formButtonPrimary: {
-                                backgroundColor: '#9EFF76',
-                                color: '#0D0D0D',
+                            formButtonPrimary: { 
+                                backgroundColor: '#9EFF76', 
+                                color: '#0D0D0D', 
                                 fontWeight: '700',
                                 textTransform: 'uppercase'
                             }
@@ -718,7 +45,7 @@
 
                 const startBtn = document.getElementById('startJourneyBtn');
                 const navLoginBtn = document.getElementById('navLoginBtn');
-
+                
                 // Profile Dropdown Setup
                 const updateProfileUI = () => {
                     const user = window.Clerk.user;
@@ -733,12 +60,12 @@
                     const customProfileContainer = document.getElementById('customProfileContainer');
                     if (customProfileContainer) {
                         customProfileContainer.style.display = 'block';
-
+                        
                         // Populate Avatar & Name
                         document.getElementById('profileAvatar').src = user.imageUrl;
                         document.getElementById('profileFirstName').innerText = user.firstName || 'User';
                         document.getElementById('profileFullName').innerText = user.fullName || user.firstName || 'Verified Member';
-
+                        
                         const primaryEmail = user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : '';
                         const primaryPhone = user.primaryPhoneNumber ? user.primaryPhoneNumber.phoneNumber : '';
                         document.getElementById('profileContact').innerText = primaryEmail || primaryPhone;
@@ -756,7 +83,7 @@
                                 await window.Clerk.user.update({
                                     unsafeMetadata: { ...window.Clerk.user.unsafeMetadata, grade: e.target.value }
                                 });
-                            } catch (err) {
+                            } catch(err) {
                                 console.error("Grade update failed:", err);
                             } finally {
                                 gradeSelect.disabled = false;
@@ -766,7 +93,7 @@
                         // Dropdown Toggle
                         const profileToggleBtn = document.getElementById('profileToggleBtn');
                         const profileDropdown = document.getElementById('profileDropdown');
-
+                        
                         profileToggleBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             profileDropdown.classList.toggle('active');
@@ -914,7 +241,7 @@
                             redirectUrl: window.location.href,
                             redirectUrlComplete: window.location.href
                         });
-                    } catch (err) {
+                    } catch(err) {
                         showError(err.errors ? err.errors[0].message : "Google Auth Failed.");
                     }
                 });
@@ -926,7 +253,7 @@
                             redirectUrl: window.location.href,
                             redirectUrlComplete: window.location.href
                         });
-                    } catch (err) {
+                    } catch(err) {
                         showError(err.errors ? err.errors[0].message : "Facebook Auth Failed.");
                     }
                 });
@@ -972,11 +299,11 @@
                     try {
                         const signInAttempt = await window.Clerk.client.signIn.create({ identifier });
                         const factor = signInAttempt.supportedFirstFactors.find(f => f.strategy === strategy);
-
+                        
                         if (!factor) { throw new Error("This verification method is not supported by your Clerk account settings."); }
 
                         await signInAttempt.prepareFirstFactor(factor);
-
+                        
                         isSignUpFlow = false;
                         pendingAction = signInAttempt;
 
@@ -988,12 +315,12 @@
                     } catch (err) {
                         if (err.errors && err.errors[0].code === 'form_identifier_not_found') {
                             try {
-                                const params = currentAuthType === 'email'
-                                    ? { emailAddress: identifier }
+                                const params = currentAuthType === 'email' 
+                                    ? { emailAddress: identifier } 
                                     : { phoneNumber: identifier };
 
                                 const signUpAttempt = await window.Clerk.client.signUp.create(params);
-
+                                
                                 if (currentAuthType === 'email') {
                                     await signUpAttempt.prepareEmailAddressVerification({ strategy: 'email_code' });
                                 } else {
@@ -1046,7 +373,7 @@
                         if (finalStatus.status === 'complete') {
                             await window.Clerk.setActive({ session: finalStatus.createdSessionId });
                             closeAuthModal();
-                            window.location.reload();
+                            window.location.reload(); 
                         } else {
                             showError("Verification incomplete. Check Clerk Dashboard settings (e.g., missing required fields like Name).");
                         }
@@ -1091,7 +418,7 @@
                 if (interval > 1) return Math.floor(interval) + " minutes";
                 return Math.floor(seconds) + " seconds";
             }
-
+            
             // ISO 8601 Duration Parser
             function getDurationInSeconds(duration) {
                 const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
@@ -1109,11 +436,11 @@
                     if (data.items && data.items.length > 0) {
                         const videoIds = data.items.map(item => item.id.videoId).join(",");
                         const VIDEOS_API_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`;
-
+                        
                         // Fetch the video details to get their durations
                         const vidRes = await fetch(VIDEOS_API_URL);
                         const vidData = await vidRes.json();
-
+                        
                         const durationMap = {};
                         if (vidData.items) {
                             vidData.items.forEach(v => {
@@ -1129,14 +456,14 @@
                         }).slice(0, 4); // Take latest 4 long-form videos
 
                         feedGrid.innerHTML = ""; // Clear loader
-
+                        
                         if (longVideos.length > 0) {
                             longVideos.forEach(item => {
                                 const videoId = item.id.videoId;
                                 const title = item.snippet.title;
                                 const publishedAt = item.snippet.publishedAt;
                                 const thumbUrl = item.snippet.thumbnails.high.url;
-
+                                
                                 // Build Video Card
                                 const card = document.createElement("div");
                                 card.className = "video-card interactive";
@@ -1150,7 +477,7 @@
                                         <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
                                     </div>
                                 `;
-
+                                
                                 // Click listener for Lightbox
                                 card.addEventListener("click", () => {
                                     ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
@@ -1188,17 +515,12 @@
                 if (e.target === ytModal) closeModal();
             });
         });
-    </script>
 
     <!-- Generic Resource Iframe Modal -->
     <div id="resourceModal" class="cyber-modal">
-        <div class="cyber-modal-content glass-card"
-            style="width: 95%; max-width: 1000px; padding: 1.5rem; height: 85vh; display: flex; flex-direction: column;">
-            <button id="resourceCloseBtn" class="modal-close-btn"
-                style="top: -15px; right: -15px; z-index: 100; background: #000;"><i data-lucide="x"></i></button>
-            <div id="resourceIframeContainer"
-                style="flex: 1; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;">
-            </div>
+        <div class="cyber-modal-content glass-card" style="width: 95%; max-width: 1000px; padding: 1.5rem; height: 85vh; display: flex; flex-direction: column;">
+            <button id="resourceCloseBtn" class="modal-close-btn" style="top: -15px; right: -15px; z-index: 100; background: #000;"><i data-lucide="x"></i></button>
+            <div id="resourceIframeContainer" style="flex: 1; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;"></div>
         </div>
     </div>
 
@@ -1219,7 +541,6 @@
     </div>
 
     <!-- EXPERTISE MODAL LOGIC -->
-    <script>
         const expData = {
             "9th": {
                 title: "Class 9th Foundation",
@@ -1274,17 +595,17 @@
             expCards.forEach(card => {
                 card.addEventListener('click', () => {
                     const key = card.getAttribute('data-expertise');
-                    if (!key || !expData[key]) return;
+                    if(!key || !expData[key]) return;
                     const data = expData[key];
-
+                    
                     expModalTitle.innerText = data.title;
                     expIconContainer.innerHTML = `<i data-lucide="${data.icon}"></i>`;
                     expFeaturesList.innerHTML = data.features.map(f => `
                         <li><i data-lucide="${f.icon}"></i> <span>${f.text}</span></li>
                     `).join('');
-
+                    
                     if (window.lucide) window.lucide.createIcons();
-
+                    
                     expModal.classList.add('active');
                     document.body.style.overflow = "hidden";
                 });
@@ -1300,7 +621,6 @@
                 if (e.target === expModal) closeExpModal();
             });
         });
-    </script>
 
     <!-- AI Mentor Chatbot Widget -->
     <div id="aiChatWidget" class="ai-chat-widget">
@@ -1322,14 +642,13 @@
                 </div>
                 <button id="aiCloseBtn" class="ai-close-btn"><i data-lucide="chevron-down"></i></button>
             </div>
-
+            
             <div id="aiChatBody" class="ai-chat-body">
                 <div class="ai-message ai-bot">
-                    <div class="ai-bubble">Hello! I am your dedicated study partner. Ask me anything about your 9th-12th
-                        subjects or our latest course updates.</div>
+                    <div class="ai-bubble">Hello! I am your dedicated study partner. Ask me anything about your 9th-12th subjects or our latest course updates.</div>
                 </div>
             </div>
-
+            
             <div class="ai-chat-input-area">
                 <input type="text" id="aiInput" placeholder="Ask about your syllabus..." autocomplete="off">
                 <button id="aiSendBtn"><i data-lucide="send"></i></button>
@@ -1338,7 +657,6 @@
     </div>
 
     <!-- HIERARCHICAL HUB LOGIC -->
-    <script>
         const hubState = { board: 'CBSE', level: 1, class: null, subject: null, subSubject: null, chapter: null };
 
         function renderHub() {
@@ -1360,9 +678,9 @@
             if (hubState.level === 3) renderSubSubjects();
             if (hubState.level === 4) renderChapters();
             if (hubState.level === 5) renderActions();
-
+            
             // Re-initialize Lucide Icons
-            if (window.lucide) {
+            if(window.lucide) {
                 setTimeout(() => lucide.createIcons(), 10);
             }
         }
@@ -1387,7 +705,7 @@
         function renderSubjects() {
             const grid = document.getElementById('subjectGrid');
             document.getElementById('lblLevel2').innerText = `${hubState.board} > ${hubState.class}`;
-
+            
             // Mock dynamic subjects based on Class and Board
             let subjects = [
                 { name: "Mathematics", icon: "calculator" },
@@ -1395,7 +713,7 @@
                 { name: "English", icon: "book-open" },
                 { name: "Social Science", icon: "globe-2" } // unique multi-subject icon
             ];
-            if (hubState.class.includes("11") || hubState.class.includes("12")) {
+            if(hubState.class.includes("11") || hubState.class.includes("12")) {
                 subjects = [
                     { name: "Physics", icon: "atom" },
                     { name: "Chemistry", icon: "flask-conical" },
@@ -1415,7 +733,7 @@
 
         function selectSubject(s) {
             hubState.subject = s;
-            if (s === "Social Science") {
+            if(s === "Social Science") {
                 hubState.level = 3;
             } else {
                 // Skip level 3 for regular subjects
@@ -1428,7 +746,7 @@
         function renderSubSubjects() {
             const grid = document.getElementById('subSubjectGrid');
             document.getElementById('lblLevel3').innerText = `${hubState.board} > ${hubState.class} > ${hubState.subject}`;
-
+            
             const subSubjects = [
                 { name: "History", icon: "landmark" },
                 { name: "Geography", icon: "map" },
@@ -1460,8 +778,8 @@
                 const text = await res.text();
                 hubDataStore = parseCSV(text);
                 isHubDataLoaded = true;
-                if (hubState.level === 4) renderChapters(); // Re-render if hanging on loader
-            } catch (err) {
+                if(hubState.level === 4) renderChapters(); // Re-render if hanging on loader
+            } catch(err) {
                 console.error("Failed to fetch sheet", err);
             }
         }
@@ -1471,7 +789,7 @@
             let quote = false;
             let row = 0, col = 0, c = 0;
             for (; c < str.length; c++) {
-                var cc = str[c], nc = str[c + 1];
+                var cc = str[c], nc = str[c+1];
                 arr[row] = arr[row] || [];
                 arr[row][col] = arr[row][col] || '';
                 if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
@@ -1483,56 +801,56 @@
                 arr[row][col] += cc;
             }
             return arr.slice(1).map(r => ({
-                boards: (r[0] || '').trim().toUpperCase(),
-                class: (r[1] || '').trim(),
-                subject: (r[2] || '').trim().toUpperCase(),
-                chapter: (r[3] || '').trim(),
-                notes: (r[4] || '').trim(),
-                quiz: (r[5] || '').trim(),
-                lectures: (r[6] || '').trim(),
-                pyq: (r[7] || '').trim(),
-                extra: (r[8] || '').trim()
+                boards: (r[0]||'').trim().toUpperCase(),
+                class: (r[1]||'').trim(),
+                subject: (r[2]||'').trim().toUpperCase(),
+                chapter: (r[3]||'').trim(),
+                notes: (r[4]||'').trim(),
+                quiz: (r[5]||'').trim(),
+                lectures: (r[6]||'').trim(),
+                pyq: (r[7]||'').trim(),
+                extra: (r[8]||'').trim()
             })).filter(r => r.boards && r.class);
         }
 
         function renderChapters() {
             const list = document.getElementById('chapterList');
-            const path = hubState.subSubject
+            const path = hubState.subSubject 
                 ? `${hubState.board} > ${hubState.class} > Social Science > ${hubState.subSubject}`
                 : `${hubState.board} > ${hubState.class} > ${hubState.subject}`;
             document.getElementById('lblLevel4').innerText = path;
-
-            if (!isHubDataLoaded) {
+            
+            if(!isHubDataLoaded) {
                 list.innerHTML = `<div class="hub-loader"><div class="pulse-circle"></div><span>Fetching Live Data...</span></div>`;
                 return;
             }
-
+            
             const filterBoard = hubState.board.toUpperCase().trim();
             const filterClass = hubState.class.replace('th Class', '').trim(); // e.g., "9"
             const targetSubject = hubState.subject === 'Social Science' ? hubState.subSubject : hubState.subject;
             let filterSubject = targetSubject.toUpperCase().trim();
-
+            
             // Map UI subject names to Exact Sheet Subject names
             if (filterSubject === "MATHEMATICS") filterSubject = "MATHS";
             if (filterSubject === "POLITICAL SCIENCE (CIVICS)") filterSubject = "CIVICS";
 
-            currentFilteredChapters = hubDataStore.filter(r =>
-                r.boards === filterBoard &&
-                r.class === filterClass &&
+            currentFilteredChapters = hubDataStore.filter(r => 
+                r.boards === filterBoard && 
+                r.class === filterClass && 
                 r.subject === filterSubject
             );
 
-            if (currentFilteredChapters.length === 0) {
+            if(currentFilteredChapters.length === 0) {
                 list.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 2rem;">No chapters available yet.</div>`;
             } else {
                 list.innerHTML = currentFilteredChapters.map((ch, i) => `
                     <div class="hub-list-item" onclick="selectChapterObj(${i})">
-                        <span><b>0${i + 1}.</b> ${ch.chapter}</span>
+                        <span><b>0${i+1}.</b> ${ch.chapter}</span>
                         <i data-lucide="chevron-right"></i>
                     </div>
                 `).join('');
             }
-            if (window.lucide) setTimeout(() => lucide.createIcons(), 10);
+            if(window.lucide) setTimeout(() => lucide.createIcons(), 10);
         }
 
         function selectChapterObj(idx) {
@@ -1550,7 +868,7 @@
         }
 
         function goBackFromChapters() {
-            if (hubState.subject === "Social Science") {
+            if(hubState.subject === "Social Science") {
                 hubState.level = 3;
             } else {
                 hubState.level = 2;
@@ -1561,10 +879,10 @@
         function renderActions() {
             document.getElementById('lblLevel5').innerText = `${hubState.chapter}`;
             const grid = document.getElementById('actionGrid');
-
-            if (!currentChapterData) return;
+            
+            if(!currentChapterData) return;
             grid.innerHTML = '';
-
+            
             const actionsMap = [
                 { key: 'notes', label: 'Notes', icon: 'file-text' },
                 { key: 'pyq', label: 'Previous Year Questions', icon: 'history' },
@@ -1572,7 +890,7 @@
                 { key: 'quiz', label: 'Quiz', icon: 'help-circle' },
                 { key: 'extra', label: 'Some Extra Tips', icon: 'zap' }
             ];
-
+            
             let html = '';
             actionsMap.forEach(act => {
                 const val = currentChapterData[act.key];
@@ -1586,12 +904,12 @@
                 }
             });
 
-            if (html === '') {
+            if(html === '') {
                 grid.innerHTML = `<div style="grid-column: span 5; text-align: center; color: var(--text-secondary); padding: 2rem;">Resources are being pushed soon.</div>`;
             } else {
                 grid.innerHTML = html;
             }
-            if (window.lucide) setTimeout(() => lucide.createIcons(), 10);
+            if(window.lucide) setTimeout(() => lucide.createIcons(), 10);
         }
 
         function goLevel(lvl) {
@@ -1614,7 +932,7 @@
             const val = decodeURIComponent(encodedVal).trim();
             const modal = document.getElementById('resourceModal');
             const container = document.getElementById('resourceIframeContainer');
-
+            
             // Check if string is a valid URL
             const isUrl = val.startsWith('http://') || val.startsWith('https://') || val.startsWith('www.');
 
@@ -1622,7 +940,7 @@
                 // Render as text if it's 'extra tips' or just plain text (e.g. "Unfiled Notes" smart chips)
                 const titleText = type === 'extra' ? 'Extra Tips' : 'Data Format Error';
                 const iconName = type === 'extra' ? 'zap' : 'alert-triangle';
-
+                
                 container.innerHTML = `<div style="color: #fff; padding: 2.5rem; font-size: 1.15rem; line-height: 1.8; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%;">
                     <i data-lucide="${iconName}" style="width: 48px; height: 48px; color: ${type === 'extra' ? 'var(--cyber-green)' : '#ff4444'}; margin-bottom: 1rem; opacity: 0.9;"></i>
                     <h3 style="color: ${type === 'extra' ? 'var(--cyber-green)' : '#ff4444'}; margin-bottom: 1rem; font-size: 1.5rem;">${titleText}</h3>
@@ -1635,19 +953,19 @@
                 </div>`;
             } else {
                 let finalUrl = val;
-                if (finalUrl.startsWith('www.')) finalUrl = 'https://' + finalUrl;
-
+                if(finalUrl.startsWith('www.')) finalUrl = 'https://' + finalUrl;
+                
                 // YouTube standard link
-                if (finalUrl.includes('youtube.com/watch?v=')) {
+                if(finalUrl.includes('youtube.com/watch?v=')) {
                     finalUrl = finalUrl.replace('watch?v=', 'embed/');
                 }
                 // YouTube short link
-                else if (finalUrl.includes('youtu.be/')) {
+                else if(finalUrl.includes('youtu.be/')) {
                     finalUrl = finalUrl.replace('youtu.be/', 'www.youtube.com/embed/');
                 }
-
+                
                 // Google Drive standard link (View -> Preview for iframe support)
-                if (finalUrl.includes('drive.google.com/file/d/') && finalUrl.includes('/view')) {
+                if(finalUrl.includes('drive.google.com/file/d/') && finalUrl.includes('/view')) {
                     finalUrl = finalUrl.replace('/view', '/preview');
                 }
 
@@ -1655,7 +973,7 @@
             }
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            if (window.lucide) setTimeout(() => lucide.createIcons(), 10);
+            if(window.lucide) setTimeout(() => lucide.createIcons(), 10);
         }
 
         document.getElementById('resourceCloseBtn').addEventListener('click', () => {
@@ -1665,7 +983,7 @@
         });
 
         document.getElementById('resourceModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('resourceModal')) {
+            if(e.target === document.getElementById('resourceModal')) {
                 document.getElementById('resourceModal').classList.remove('active');
                 document.getElementById('resourceIframeContainer').innerHTML = '';
                 document.body.style.overflow = '';
@@ -1684,7 +1002,7 @@
 
         function toggleAiChat() {
             aiChatWindow.classList.toggle('active');
-            if (aiChatWindow.classList.contains('active')) {
+            if(aiChatWindow.classList.contains('active')) {
                 setTimeout(() => aiInput.focus(), 300);
             }
         }
@@ -1700,60 +1018,59 @@
             aiChatBody.scrollTop = aiChatBody.scrollHeight;
         }
 
-        // Gemini API Fetcher
-        async function fetchGeminiAnswer(query) {
-            // ==========================================
-            // ADMIN: PUT YOUR GEMINI API KEY BELOW 👇
-            // ==========================================
-            const API_KEY = "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ";
+        function handleAiInteraction() {
+            const text = aiInput.value.trim();
+            if(!text) return;
+            
+            // Add User msg
+            addAiMessage(text, 'user');
+            aiInput.value = '';
 
-            if (API_KEY === "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ" || !API_KEY) {
-                return "<b>Admin Setup Required:</b> My Gemini brain is disconnected! Please open <code>index.html</code>, search for <code>YOUR_GEMINI_API_KEY_HERE</code>, and paste your real Google API key.";
-            }
-
+        async function fetchAcademicAnswer(query) {
             try {
-                const prompt = `You are the B.K. Singh Classes AI Academic Mentor. You help 9th-12th CBSE/BSEB students. 
-Constraint: Never answer non-academic questions (movies, gaming, politics). 
-The student asked: "${query}". 
-Respond clearly, concisely, strictly academically, and in HTML format (use <b>, <ul>, <li>, <br> only).`;
+                // Remove common conversational words to isolate the core academic term using word boundaries
+                let cleanQuery = query.toLowerCase().replace(/\b(what is|explain|define|tell me about|how does|what are|the|a)\b/gi, '').trim();
+                // We keep 'law of' so that "law of force" searches for "law of force" explicitly if wanted, but "force" is better. Actually let Wikipedia handle it.
+                if(!cleanQuery) cleanQuery = query;
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-
-                const data = await response.json();
-                if (data.candidates && data.candidates.length > 0) {
-                    let rawText = data.candidates[0].content.parts[0].text;
-                    // Clean up potential markdown formatting mistakenly left by Gemini
-                    rawText = rawText.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-                    return rawText + `<br><br><small style="color:var(--cyber-green); opacity:0.8;"><i>Powered by Google Gemini 1.5 Flash</i></small>`;
+                // Wikipedia Open Search API
+                const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanQuery)}&utf8=&format=json&origin=*`);
+                const searchData = await searchRes.json();
+                
+                if(searchData.query && searchData.query.search.length > 0) {
+                    // Get the exact title of the best match
+                    const title = searchData.query.search[0].title;
+                    // Fetch the summary via REST API
+                    const pageRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+                    const pageData = await pageRes.json();
+                    
+                    if(pageData.extract) {
+                        return pageData.extract + `<br><br><small style="color:var(--cyber-green); opacity:0.8;"><i>Source: Global Academic Database</i></small>`;
+                    }
                 }
-                return "I'm having trouble analyzing that right now. Please try again.";
-            } catch (e) {
-                console.error(e);
-                return "Network Error connecting to the Gemini Neural Engine.";
+                return "That's an advanced concept! While I'm still learning to parse complex technical problems entirely, I recommend checking our detailed Lectures in the Learning Hub for deep-dive answers on this topic.";
+            } catch (err) {
+                 return "I'm having trouble connecting to my academic database right now. Please check your internet connection or try checking the Learning Hub!";
             }
         }
 
-        // Guardrail logic & Chat Engine
+        // Guardrail logic / Academic Response Engine
         function handleAiInteraction() {
             const text = aiInput.value.trim();
-            if (!text) return;
-
+            if(!text) return;
+            
             // Add User msg
             addAiMessage(text, 'user');
             aiInput.value = '';
 
             const lText = text.toLowerCase();
             const forbidden = ['movie', 'game', 'gaming', 'play', 'song', 'dance', 'film', 'music', 'pubg', 'bgmi', 'free fire', 'youtube', 'joke'];
-
+            
             let isForbidden = forbidden.some(k => lText.includes(k) && !lText.includes("documentary"));
-
-            if (isForbidden) {
+            
+            if(isForbidden) {
                 setTimeout(() => addAiMessage("I am your B.K. Singh Classes Academic Mentor. Let's stay focused on your studies! How can I help you with your subjects today?", 'bot'), 600);
-            } else if (lText.match(/\b(hi|hello|hey|start)\b/)) {
+            } else if(lText.match(/\b(hi|hello|hey|start)\b/)) {
                 setTimeout(() => addAiMessage("Hello! Ready to conquer your syllabus today?", 'bot'), 600);
             } else {
                 // Show typing indicator
@@ -1762,14 +1079,14 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
                     const msgDiv = document.createElement('div');
                     msgDiv.id = typingId;
                     msgDiv.className = `ai-message ai-bot`;
-                    msgDiv.innerHTML = `<div class="ai-bubble" style="opacity: 0.7;"><i>Thinking...</i></div>`;
+                    msgDiv.innerHTML = `<div class="ai-bubble" style="opacity: 0.7;"><i>Researching concept...</i></div>`;
                     aiChatBody.appendChild(msgDiv);
                     aiChatBody.scrollTop = aiChatBody.scrollHeight;
-
-                    // Fetch real answer from Gemini
-                    fetchGeminiAnswer(text).then(answer => {
+                    
+                    // Fetch real answer
+                    fetchAcademicAnswer(text).then(answer => {
                         const tEl = document.getElementById(typingId);
-                        if (tEl) tEl.remove();
+                        if(tEl) tEl.remove();
                         addAiMessage(answer, 'bot');
                     });
                 }, 400);
@@ -1778,7 +1095,7 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
 
         aiSendBtn.addEventListener('click', handleAiInteraction);
         aiInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleAiInteraction();
+            if(e.key === 'Enter') handleAiInteraction();
         });
 
         // Initialize App Hub
@@ -1786,7 +1103,3 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
             fetchHubData();
             renderHub();
         });
-    </script>
-</body>
-
-</html>
