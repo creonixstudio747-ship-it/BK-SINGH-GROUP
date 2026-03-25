@@ -992,10 +992,7 @@
             ];
 
             const YOUTUBE_API_KEY = "AIzaSyDUWMfc1lHdAGIDC70irZXbFNyOsggvl44";
-            const CHANNEL_ID = "UCQ9Mr2KzICkZzoc6r5R-h3w";
-            const MAX_RESULTS = 4;
-            // Fetch 50 items so we have enough buffer to filter out shorts
-            const SEARCH_API_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&type=video`;
+            const CHANNEL_HANDLE = "b.k.singhenglishclasses";
 
             const feedGrid = document.getElementById("youtubeFeedGrid");
             const ytModal = document.getElementById("youtubeModal");
@@ -1081,37 +1078,66 @@
 
             async function fetchAndRender() {
                 try {
-                    const response = await fetch(SEARCH_API_URL);
-                    const data = await response.json();
+                    // Step 1: Resolve handle → Channel ID + uploads playlist
+                    const channelRes = await fetch(
+                        `https://www.googleapis.com/youtube/v3/channels?key=${YOUTUBE_API_KEY}&forHandle=${CHANNEL_HANDLE}&part=id,contentDetails`
+                    );
+                    const channelData = await channelRes.json();
 
-                    if (!data.items || data.items.length === 0) {
-                        feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No videos found.</p>`;
+                    if (!channelData.items || channelData.items.length === 0) {
+                        console.warn("Channel not found, using fallback.");
+                        renderVideos(FALLBACK_VIDEOS);
                         return;
                     }
 
-                    const videoIds = data.items.map(item => item.id.videoId).join(",");
-                    const VIDEOS_API_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`;
-                    const vidRes = await fetch(VIDEOS_API_URL);
-                    const vidData = await vidRes.json();
+                    const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
 
-                    const durationMap = {};
-                    if (vidData.items) {
-                        vidData.items.forEach(v => { durationMap[v.id] = v.contentDetails.duration; });
+                    // Step 2: Fetch latest 50 videos from uploads playlist (costs only 1 quota unit vs 100 for search)
+                    const playlistRes = await fetch(
+                        `https://www.googleapis.com/youtube/v3/playlistItems?key=${YOUTUBE_API_KEY}&playlistId=${uploadsPlaylistId}&part=snippet&maxResults=50`
+                    );
+                    const playlistData = await playlistRes.json();
+
+                    if (!playlistData.items || playlistData.items.length === 0) {
+                        renderVideos(FALLBACK_VIDEOS);
+                        return;
                     }
 
-                    const longVideos = data.items
+                    // Step 3: Get durations to filter out Shorts (<= 61s)
+                    const videoIds = playlistData.items
+                        .map(item => item.snippet.resourceId.videoId)
+                        .join(",");
+
+                    const durRes = await fetch(
+                        `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`
+                    );
+                    const durData = await durRes.json();
+
+                    const durationMap = {};
+                    if (durData.items) {
+                        durData.items.forEach(v => { durationMap[v.id] = v.contentDetails.duration; });
+                    }
+
+                    // Step 4: Filter Shorts and pick 4 latest long-form videos
+                    const longVideos = playlistData.items
                         .filter(item => {
-                            const dur = durationMap[item.id.videoId];
-                            if (!dur) return true;
+                            const vid = item.snippet.resourceId.videoId;
+                            const dur = durationMap[vid];
+                            if (!dur) return true; // include if duration unknown
                             return getDurationInSeconds(dur) > 61;
                         })
                         .slice(0, 4)
                         .map(item => ({
-                            videoId: item.id.videoId,
+                            videoId: item.snippet.resourceId.videoId,
                             title: item.snippet.title,
                             publishedAt: item.snippet.publishedAt,
-                            thumbUrl: item.snippet.thumbnails.high.url
+                            thumbUrl: (item.snippet.thumbnails.high || item.snippet.thumbnails.default).url
                         }));
+
+                    if (longVideos.length === 0) {
+                        renderVideos(FALLBACK_VIDEOS);
+                        return;
+                    }
 
                     setCachedFeed(longVideos); // Save to cache
                     renderVideos(longVideos);
