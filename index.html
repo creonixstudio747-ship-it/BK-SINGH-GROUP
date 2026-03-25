@@ -102,9 +102,109 @@
                     <button class="btn btn-secondary">Explore Programs</button>
                 </div>
             </div>
-            <div class="hero-mockup glass-card interactive">
-                <img id="dashboardImg" src="assets/high_end_dashboard_mockup_1774359927483.png" alt="High-end dashboard mockup">
-                <div class="mockup-overlay"></div>
+            <div class="dashboard-live-ui glass-card interactive">
+                <div class="dashboard-nav">
+                    <div class="dash-logo">
+                        <i data-lucide="graduation-cap"></i> B.K. Singh Classes
+                    </div>
+                    <div class="dash-links">
+                        <span class="active"><i data-lucide="layout-dashboard"></i> Dashboard</span>
+                        <span><i data-lucide="book-open"></i> My Courses</span>
+                        <span><i data-lucide="file-check-2"></i> Mock Tests</span>
+                        <span><i data-lucide="briefcase"></i> Placement</span>
+                        <span><i data-lucide="pie-chart"></i> Analytics</span>
+                    </div>
+                    <div class="dash-user">
+                        <div class="dash-avatar"><i data-lucide="user"></i></div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Section A: Activity Overview -->
+                    <div class="dash-panel panel-a">
+                        <h4>Student Activity Overview</h4>
+                        <div class="panel-a-content">
+                            <div class="chart-wavy">
+                                <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="glowG" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#9EFF76" stop-opacity="0.4"/>
+                                            <stop offset="100%" stop-color="#9EFF76" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <rect x="20" y="30" width="8" height="50" fill="rgba(158,255,118,0.15)"/>
+                                    <rect x="60" y="20" width="8" height="60" fill="rgba(158,255,118,0.15)"/>
+                                    <rect x="100" y="40" width="8" height="40" fill="rgba(158,255,118,0.15)"/>
+                                    <rect x="140" y="10" width="8" height="70" fill="rgba(158,255,118,0.15)"/>
+                                    <rect x="180" y="25" width="8" height="55" fill="rgba(158,255,118,0.15)"/>
+                                    <path d="M0,60 C40,20 60,70 100,40 C140,10 160,50 200,30 L200,80 L0,80 Z" fill="url(#glowG)"/>
+                                    <path d="M0,60 C40,20 60,70 100,40 C140,10 160,50 200,30" fill="none" stroke="#9EFF76" stroke-width="2" style="filter: drop-shadow(0 0 4px rgba(158,255,118,0.8));"/>
+                                </svg>
+                            </div>
+                            <div class="gauge-wrap">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <path class="circle" stroke-dasharray="92, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <text x="18" y="20.35" class="percentage">92%</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section B: Performance Metrics -->
+                    <div class="dash-panel panel-b">
+                        <h4>Performance Metrics</h4>
+                        <div class="radar-charts">
+                            <svg viewBox="0 0 100 100" class="radar">
+                                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="none" stroke="rgba(255,255,255,0.1)"/>
+                                <polygon points="50,20 75,35 75,65 50,80 25,65 25,35" fill="none" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="10" y1="27.5" x2="90" y2="72.5" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="90" y1="27.5" x2="10" y2="72.5" stroke="rgba(255,255,255,0.1)"/>
+                                <polygon points="50,15 80,35 70,65 50,85 20,60 30,30" fill="rgba(158,255,118,0.2)" stroke="#9EFF76" stroke-width="1.5" style="filter:drop-shadow(0 0 4px #9EFF76);"/>
+                            </svg>
+                            <svg viewBox="0 0 100 100" class="radar">
+                                <polygon points="50,5 90,27.5 90,72.5 50,95 10,72.5 10,27.5" fill="none" stroke="rgba(255,255,255,0.1)"/>
+                                <polygon points="50,20 75,35 75,65 50,80 25,65 25,35" fill="none" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="50" y1="5" x2="50" y2="95" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="10" y1="27.5" x2="90" y2="72.5" stroke="rgba(255,255,255,0.1)"/>
+                                <line x1="90" y1="27.5" x2="10" y2="72.5" stroke="rgba(255,255,255,0.1)"/>
+                                <polygon points="50,30 85,30 80,70 50,75 30,60 15,40" fill="rgba(79,70,229,0.3)" stroke="#4F46E5" stroke-width="1.5" style="filter:drop-shadow(0 0 4px #4F46E5);"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Section C: Course Completion Status -->
+                    <div class="dash-panel panel-c">
+                        <h4>Course Completion Status</h4>
+                        <div class="course-status-grid">
+                            <div class="status-ring"><svg viewBox="0 0 36 36"><path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><path class="circle" stroke-dasharray="100,100" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><text x="18" y="21">100%</text></svg></div>
+                            <div class="status-ring"><svg viewBox="0 0 36 36"><path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><path class="circle" stroke-dasharray="30,100" style="stroke: #4F46E5;" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><text x="18" y="21">30%</text></svg></div>
+                            <div class="status-ring"><svg viewBox="0 0 36 36"><path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><path class="circle" stroke-dasharray="50,100" style="stroke: #4F46E5;" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><text x="18" y="21">50%</text></svg></div>
+                            <div class="status-ring"><svg viewBox="0 0 36 36"><path class="circle-bg" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><path class="circle" stroke-dasharray="70,100" d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"/><text x="18" y="21">70%</text></svg></div>
+                            <div class="status-bars">
+                                <div class="bar-col"><div class="bar-fill" style="height: 10%"></div></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 50%; background: #4F46E5; box-shadow: 0 0 8px rgba(79,70,229,0.6);"></div></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 70%"></div></div>
+                                <div class="bar-col"><div class="bar-fill" style="height: 100%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section D: Learning Modules & Activity -->
+                    <div class="dash-panel panel-d">
+                        <div class="learning-modules">
+                            <h4>Top Learning Modules</h4>
+                            <div class="lm-item"><i data-lucide="book"></i> <span>Physics Board Prep</span></div>
+                            <div class="lm-item"><i data-lucide="calculator"></i> <span>Math Advanced</span></div>
+                        </div>
+                        <div class="activity-feed">
+                            <h4>Recent Activity Feed</h4>
+                            <div class="af-item"><i data-lucide="play-circle"></i> <span>Completed "Limits & Deriv."</span> <span class="badge-done"><i data-lucide="check-circle-2"></i></span></div>
+                            <div class="af-item"><i data-lucide="play-circle"></i> <span>Started "Macroeconomics"</span> <span class="badge-done" style="color: #4F46E5;"><i data-lucide="clock"></i></span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

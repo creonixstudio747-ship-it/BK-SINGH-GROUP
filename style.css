@@ -101,6 +101,7 @@ a {
   color: var(--text-primary);
   background: linear-gradient(90deg, #FFFFFF, var(--cyber-green));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -710,6 +711,127 @@ footer {
   font-size: 0.85rem;
 }
 
+/* Dashboard Live UI */
+.dashboard-live-ui {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 7;
+  max-height: 520px;
+  background: var(--bg-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  transform: translate3d(0,0,0);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(158, 255, 118, 0.1);
+  position: relative;
+  z-index: 10;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.dashboard-live-ui::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.dashboard-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.dash-logo {
+  font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: #fff;
+}
+.dash-logo i { width: 18px; color: var(--cyber-green); }
+
+.dash-links {
+  display: flex; gap: 1.5rem; font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;
+}
+.dash-links span { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; transition: color 0.3s; }
+.dash-links span:hover { color: #fff; }
+.dash-links span.active { color: var(--cyber-green); }
+.dash-links i { width: 14px; opacity: 0.8; }
+
+.dash-avatar {
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--cyber-green); display: flex; align-items: center; justify-content: center; background: rgba(158,255,118,0.1); color: var(--cyber-green);
+}
+.dash-avatar i { width: 16px; }
+
+.dashboard-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; flex: 1; height: 100%; min-height: 0;
+}
+
+.dash-panel {
+  background: rgba(26,26,26, 0.4); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; overflow: hidden; transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.dash-panel:hover {
+  border-color: rgba(158, 255, 118, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.dash-panel h4 {
+  font-size: 0.70rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 1rem; flex-shrink: 0;
+}
+
+/* Panel A: Activity Overview */
+.panel-a-content { display: flex; gap: 1rem; height: 100%; align-items: center; }
+.chart-wavy { flex: 1; height: 100%; min-height: 60px; display: flex; align-items: flex-end; }
+.chart-wavy svg { width: 100%; height: 100%; display: block; }
+.gauge-wrap { width: 60px; height: 60px; flex-shrink: 0; }
+
+/* Circular Gauges */
+.circular-chart { display: block; margin: 0 auto; max-width: 100%; max-height: 100%; }
+.circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 2.5; }
+.circle { fill: none; stroke: var(--cyber-green); stroke-width: 2.5; stroke-linecap: round; filter: drop-shadow(0 0 3px var(--cyber-green)); animation: progress 1s ease-out forwards; }
+@keyframes progress { 0% { stroke-dasharray: 0 100; } }
+.percentage { fill: #fff; font-family: var(--font-main); font-size: 9px; font-weight: bold; text-anchor: middle; }
+
+/* Panel B: Radar */
+.radar-charts { display: flex; gap: 0.5rem; height: 100%; align-items: center; justify-content: center; }
+.radar { width: 45%; max-height: 100%; }
+
+/* Panel C: Course Completion Status */
+.course-status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; grid-auto-rows: min-content; height: 100%; }
+.status-ring { height: 40px; display: flex; align-items: center; justify-content: center; }
+.status-bars {
+  grid-column: span 2; display: flex; justify-content: space-around; align-items: flex-end; height: 50px; padding-top: 10px; margin-top: auto;
+}
+.bar-col {
+  width: 10px; height: 100%; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; display: flex; align-items: flex-end;
+}
+.bar-fill {
+  width: 100%; background: var(--cyber-green); border-radius: 4px; box-shadow: 0 0 8px rgba(158,255,118,0.6); animation: growUp 1s ease-out forwards; transform-origin: bottom;
+}
+@keyframes growUp { 0% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+
+/* Panel D: Stacked */
+.panel-d { justify-content: space-between; gap: 1rem; }
+.learning-modules, .activity-feed { display: flex; flex-direction: column; gap: 0.5rem; }
+.lm-item, .af-item {
+  display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; background: rgba(255,255,255,0.03); padding: 0.4rem 0.5rem; border-radius: 6px; border: 1px solid var(--glass-border);
+}
+.lm-item i, .af-item i { width: 14px; color: var(--text-secondary); }
+.lm-item span, .af-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge-done { margin-left: auto; display: flex; }
+.badge-done i { color: var(--cyber-green) !important; width: 14px; }
+
+/* Responsive Dashboard Logic */
+@media (max-width: 1024px) {
+  .dashboard-live-ui { aspect-ratio: auto; max-height: none; height: auto; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .dash-links { display: none; }
+}
+
 /* YouTube Feed Section */
 .youtube-feed {
   padding: 100px 2rem;
@@ -811,6 +933,7 @@ footer {
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
