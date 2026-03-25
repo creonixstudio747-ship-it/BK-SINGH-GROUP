@@ -32,6 +32,7 @@
                 <a href="#" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
                 <a href="#" class="nav-item"><i data-lucide="book-open"></i> My Courses</a>
                 <a href="#" class="nav-item" id="navMockTest"><i data-lucide="file-check-2"></i> Mock Tests</a>
+                <a href="#results-hub" class="nav-item"><i data-lucide="graduation-cap"></i> Results</a>
                 <a href="#" class="nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
                 <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
             </nav>
@@ -55,6 +56,7 @@
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="book-open"></i> My Courses</a>
             <a href="#" class="nav-item mobile-nav-item" id="mobileNavMockTest"><i data-lucide="file-check-2"></i> Mock Tests</a>
+            <a href="#results-hub" class="nav-item mobile-nav-item"><i data-lucide="graduation-cap"></i> Results</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
             <a id="mobileLoginBtn" href="#" class="btn btn-primary"
@@ -514,6 +516,58 @@
             </div>
         </section>
 
+        <!-- Academic Results Hub (Marksheet) -->
+        <section id="results-hub" class="results-hub container reveal">
+            <div class="results-container">
+                <div class="section-header">
+                    <h2 class="cyber-text">Academic Results Hub</h2>
+                    <p>Access your official marksheets and performance board</p>
+                </div>
+
+                <div class="search-box-wrap glass-card">
+                    <form id="resultsForm" class="results-form" onsubmit="handleResultSearch(event)">
+                        <div class="input-group">
+                            <label for="rollNum">Roll Number / Registration ID</label>
+                            <input type="text" id="rollNum" placeholder="e.g. 2026BKS001" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="examCat">Examination Category</label>
+                            <select id="examCat">
+                                <option value="board">Final Board Examination (10th/12th)</option>
+                                <option value="mock">Periodic Mock Marathon</option>
+                                <option value="scholarship">B.K. Singh Scholarship Test</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-search">
+                            <i data-lucide="search"></i> Check Results
+                        </button>
+                    </form>
+
+                    <div id="searchingLoader" class="searching-loader">
+                        <div class="cyber-spinner"></div>
+                        <p class="cyber-text">Querying B.K. Singh Secure Database...</p>
+                    </div>
+
+                    <div id="resultCard" class="result-card">
+                        <div class="result-header">
+                            <div class="student-info">
+                                <h3 id="resName">Student Name</h3>
+                                <p id="resDetails">Class 10th | CBSE Board</p>
+                            </div>
+                            <div class="result-badge">PASSED (A+)</div>
+                        </div>
+                        <div class="marks-grid">
+                            <div class="mark-item"><span class="mark-label">Mathematics</span> <span class="mark-value">98/100</span></div>
+                            <div class="mark-item"><span class="mark-label">Science</span> <span class="mark-value">95/100</span></div>
+                            <div class="mark-item"><span class="mark-label">English</span> <span class="mark-value">92/100</span></div>
+                            <div class="mark-item"><span class="mark-label">Social Science</span> <span class="mark-value">94/100</span></div>
+                        </div>
+                        <button class="btn-download"><i data-lucide="download"></i> Download Verified Marksheet (PDF)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Campus Location -->
         <section class="campus-location container reveal">
             <div class="location-container">
@@ -537,7 +591,8 @@
                         Get Directions on Google Maps
                     </a>
 
-                    <div class="photo-gallery">
+                    <div class="photo-gallery" id="campusGallery">
+                        <!-- Populated dynamically from Sheet -->
                         <div class="gallery-item" onclick="openLightbox('assets/side.jpg')">
                             <img src="assets/side.jpg" alt="Front entrance view">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
@@ -558,6 +613,17 @@
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3550.000000000000!2d83.9000000!3d27.1000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3993000000000001%3A0x0!2zQi5LLiBTaW5naCBHcm91cCwgQmFnYWhh!5e0!3m2!1sen!2sin!4v1711310000000!5m2!1sen!2sin" 
                         allowfullscreen="" loading="lazy"></iframe>
                 </div>
+            </div>
+        </section>
+
+        <!-- Library Gallery Section -->
+        <section class="library-gallery container reveal">
+            <div class="section-header">
+                <h2 class="cyber-text">The B.K. Singh Library</h2>
+                <p>Curated knowledge and research environments</p>
+            </div>
+            <div class="photo-gallery" id="libraryGallery">
+                <!-- Populated dynamically from Sheet -->
             </div>
         </section>
 
@@ -939,10 +1005,10 @@
             if (filterSubject === "BUSINESS STUDIES") filterSubject = "BST";
             
             const matchedRows = hubDataStore.filter(r => 
-                r.boards === mtState.board.toUpperCase() &&
-                r.class === mtState.class &&
-                r.subject === filterSubject &&
-                (!mtState.stream || r.stream === mtState.stream.toUpperCase())
+                r.boards.toUpperCase() === mtState.board.toUpperCase() &&
+                r.class.toUpperCase() === mtState.class.toUpperCase() &&
+                r.subject.toUpperCase() === filterSubject &&
+                (!mtState.stream || r.stream.toUpperCase() === mtState.stream.toUpperCase())
             );
 
             // Level 4 filter by stream if applicable (if your sheet has a stream column, otherwise it filters by class/subject)
@@ -1814,16 +1880,16 @@
                 arr[row][col] += cc;
             }
             return arr.slice(1).map(r => ({
-                boards: (r[0] || '').trim().toUpperCase(),
+                boards: (r[0] || '').trim(),
                 class: (r[1] || '').trim(),
-                subject: (r[2] || '').trim().toUpperCase(),
+                subject: (r[2] || '').trim(),
                 chapter: (r[3] || '').trim(),
                 notes: (r[4] || '').trim(),
                 quiz: (r[5] || '').trim(),
                 lectures: (r[6] || '').trim(),
                 pyq: (r[7] || '').trim(),
                 extra: (r[8] || '').trim(),
-                stream: (r[9] || '').trim().toUpperCase()
+                stream: (r[9] || '').trim()
             })).filter(r => r.boards && r.class);
         }
 
@@ -2132,6 +2198,87 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
         });
     </script>
     <script>
+        // Gallery Data Sync
+        const GALLERY_SHEET_URL = "https://docs.google.com/spreadsheets/d/1Qq-gDth_Na1ovxrf49jRn-83Sqg-_iDxe3mr7ZpDy4Y/export?format=csv";
+        
+        async function initGalleries() {
+            try {
+                const res = await fetch(GALLERY_SHEET_URL);
+                const text = await res.text();
+                const rows = parseCSV(text); // Re-use existing parseCSV
+                renderDynamicGalleries(rows);
+            } catch (err) {
+                console.error("Gallery Sync Failed:", err);
+            }
+        }
+
+        function renderDynamicGalleries(rows) {
+            const campusGrid = document.getElementById('campusGallery');
+            const libraryGrid = document.getElementById('libraryGallery');
+            
+            // Filter by section
+            const campusData = rows.filter(r => r.boards === 'LOCATION'); // Shared parser uses 'boards' for col 0
+            const libraryData = rows.filter(r => r.boards === 'LIBRARY');
+
+            if (campusData.length > 0) {
+                // Update campus gallery if links are valid
+                const validCampus = campusData.filter(r => r.subject && r.subject.includes('http'));
+                if (validCampus.length > 0) {
+                    campusGrid.innerHTML = validCampus.map(r => `
+                        <div class="gallery-item" onclick="openLightbox('${r.subject}')">
+                            <img src="${r.subject}" alt="Campus View">
+                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            if (libraryData.length > 0) {
+                const validLibrary = libraryData.filter(r => r.subject && r.subject.includes('http'));
+                if (validLibrary.length > 0) {
+                    libraryGrid.innerHTML = validLibrary.map(r => `
+                        <div class="gallery-item" onclick="openLightbox('${r.subject}')">
+                            <img src="${r.subject}" alt="Library Resource">
+                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                        </div>
+                    `).join('');
+                } else {
+                    // Placeholder if no library URLs yet
+                    libraryGrid.innerHTML = `<div class="mt-empty-state"><i data-lucide="book" style="opacity:0.2"></i><p>Library Archive Syncing...</p></div>`;
+                }
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Results Hub Logic
+        function handleResultSearch(e) {
+            e.preventDefault();
+            const roll = document.getElementById('rollNum').value;
+            const form = document.getElementById('resultsForm');
+            const loader = document.getElementById('searchingLoader');
+            const card = document.getElementById('resultCard');
+
+            form.style.display = 'none';
+            loader.style.display = 'flex';
+            card.style.display = 'none';
+
+            // Simulate DB Query
+            setTimeout(() => {
+                loader.style.display = 'none';
+                card.style.display = 'block';
+                
+                // Set mock data based on input
+                document.getElementById('resName').innerText = roll.includes('001') ? "Aditya Sharma" : "B.K. Singh Aspirant";
+                document.getElementById('resDetails').innerText = "Class 12th | PCM Stream | BSEB";
+            }, 2000);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initGalleries();
+            handleReveal();
+        });
+        
         // Lightbox Logic
         function openLightbox(src) {
             const lb = document.getElementById('lightbox');
@@ -2162,7 +2309,6 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
         }
 
         window.addEventListener('scroll', handleReveal);
-        window.addEventListener('DOMContentLoaded', handleReveal);
     </script>
 </body>
 
