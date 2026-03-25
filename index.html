@@ -695,8 +695,13 @@
                     btnSendCode.innerHTML = 'Sending...';
                     btnSendCode.disabled = true;
 
-                    const identifier = authInputField.value.trim();
+                    let identifier = authInputField.value.trim();
                     const strategy = currentAuthType === 'email' ? 'email_code' : 'phone_code';
+
+                    // Automatically add +91 country code for Indian numbers if no country code is provided
+                    if (currentAuthType === 'phone' && !identifier.startsWith('+')) {
+                        identifier = '+91' + identifier;
+                    }
 
                     try {
                         const signInAttempt = await window.Clerk.client.signIn.create({ identifier });
