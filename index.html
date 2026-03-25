@@ -514,6 +514,61 @@
             </div>
         </section>
 
+        <!-- Campus Location -->
+        <section class="campus-location container reveal">
+            <div class="location-container">
+                <div class="location-details">
+                    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                        <h2 class="cyber-text">Visit the B.K. Singh Hub</h2>
+                        <p>Experience excellence in person at our Bagaha campus</p>
+                    </div>
+                    
+                    <div class="address-box">
+                        <i data-lucide="map-pin"></i>
+                        <div class="address-text">
+                            Anumandal karyalay, Purana koshagar bhawan,<br>
+                            Naraipur, Bagaha, Bihar 845101
+                        </div>
+                    </div>
+
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=B.K.+Singh+Group,+Bagaha" 
+                       target="_blank" class="btn-directions">
+                        <i data-lucide="navigation"></i>
+                        Get Directions on Google Maps
+                    </a>
+
+                    <div class="photo-gallery">
+                        <div class="gallery-item" onclick="openLightbox('assets/side.jpg')">
+                            <img src="assets/side.jpg" alt="Front entrance view">
+                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                        </div>
+                        <div class="gallery-item" onclick="openLightbox('assets/outerside.jpg')">
+                            <img src="assets/outerside.jpg" alt="Wide side exterior view">
+                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                        </div>
+                        <div class="gallery-item" onclick="openLightbox('assets/poster.jpg')">
+                            <img src="assets/poster.jpg" alt="Close-up of billboard">
+                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-wrapper">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3550.000000000000!2d83.9000000!3d27.1000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3993000000000001%3A0x0!2zQi5LLiBTaW5naCBHcm91cCwgQmFnYWhh!5e0!3m2!1sen!2sin!4v1711310000000!5m2!1sen!2sin" 
+                        allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lightbox Modal -->
+        <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+            <button class="lightbox-close"><i data-lucide="x"></i></button>
+            <div class="lightbox-content" onclick="event.stopPropagation()">
+                <img id="lightboxImg" class="lightbox-img" src="" alt="Full screen preview">
+            </div>
+        </div>
+
         <!-- Founding Leadership -->
         <section class="leadership container">
             <div class="mentor-profile glass-card">
@@ -2075,6 +2130,39 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) lucide.createIcons();
         });
+    </script>
+    <script>
+        // Lightbox Logic
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            img.src = src;
+            lb.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Reveal on Scroll
+        function handleReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleReveal);
+        window.addEventListener('DOMContentLoaded', handleReveal);
     </script>
 </body>
 
