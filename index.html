@@ -261,6 +261,26 @@
             </div>
         </section>
 
+        <!-- Latest Lectures & Vlogs Feed -->
+        <section class="youtube-feed container" id="youtubeSection">
+            <div class="section-header">
+                <h2>Latest Lectures & Vlogs</h2>
+                <p>Stay updated with our newest educational content and insights</p>
+            </div>
+            <div id="youtubeFeedGrid" class="feed-grid grid-12">
+                <!-- Videos will be injected here via JS -->
+                <div class="loader cyber-green" style="grid-column: span 12; text-align: center; padding: 2rem;">Loading latest videos <i data-lucide="loader-2" class="spinning"></i></div>
+            </div>
+        </section>
+
+        <!-- YouTube Lightbox Modal -->
+        <div id="youtubeModal" class="yt-modal-overlay">
+            <div class="yt-modal-content">
+                <button class="yt-close-btn" id="ytCloseBtn"><i data-lucide="x"></i></button>
+                <div class="yt-iframe-container" id="ytIframeContainer"></div>
+            </div>
+        </div>
+
         <!-- Methodology -->
         <section class="methodology container">
             <div class="section-header">
@@ -796,6 +816,95 @@
                 console.error("Clerk Error:", err);
             }
         }
+
+        // --- YOUTUBE FEED INTEGRATION ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const YOUTUBE_API_KEY = "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ";
+            const CHANNEL_ID = "UCQ9Mr2KzICkZzoc6r5R-h3w";
+            const MAX_RESULTS = 2;
+            const API_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}&type=video`;
+
+            const feedGrid = document.getElementById("youtubeFeedGrid");
+            const ytModal = document.getElementById("youtubeModal");
+            const ytCloseBtn = document.getElementById("ytCloseBtn");
+            const ytIframeContainer = document.getElementById("ytIframeContainer");
+
+            // Time Ago format function
+            function timeSince(date) {
+                const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+                let interval = seconds / 31536000;
+                if (interval > 1) return Math.floor(interval) + " years";
+                interval = seconds / 2592000;
+                if (interval > 1) return Math.floor(interval) + " months";
+                interval = seconds / 86400;
+                if (interval > 1) return Math.floor(interval) + " days";
+                interval = seconds / 3600;
+                if (interval > 1) return Math.floor(interval) + " hours";
+                interval = seconds / 60;
+                if (interval > 1) return Math.floor(interval) + " minutes";
+                return Math.floor(seconds) + " seconds";
+            }
+
+            // Fetch Data
+            fetch(API_URL)
+                .then(response => response.json())
+                .then(data => {
+                    feedGrid.innerHTML = ""; // Clear loader
+                    if (data.items && data.items.length > 0) {
+                        data.items.forEach(item => {
+                            const videoId = item.id.videoId;
+                            const title = item.snippet.title;
+                            const publishedAt = item.snippet.publishedAt;
+                            const thumbUrl = item.snippet.thumbnails.high.url;
+                            
+                            // Build Video Card
+                            const card = document.createElement("div");
+                            card.className = "video-card interactive";
+                            card.innerHTML = `
+                                <div class="video-thumbnail-wrapper">
+                                    <img src="${thumbUrl}" alt="Thumbnail for ${title}" loading="lazy" class="video-thumbnail">
+                                    <div class="play-icon"><i data-lucide="play"></i></div>
+                                </div>
+                                <div class="video-meta">
+                                    <h3 class="video-title">${title}</h3>
+                                    <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
+                                </div>
+                            `;
+                            
+                            // Click listener for Lightbox
+                            card.addEventListener("click", () => {
+                                ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                                ytModal.classList.add("active");
+                                document.body.style.overflow = "hidden"; // Prevent scrolling
+                            });
+
+                            feedGrid.appendChild(card);
+                        });
+                        // Re-initialize any new lucide icons
+                        if (window.lucide) {
+                            window.lucide.createIcons();
+                        }
+                    } else {
+                        feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No videos found.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching YouTube feed:", error);
+                    feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: #ff4444;">Failed to load videos.</p>`;
+                });
+
+            // Close Modal Logic
+            const closeModal = () => {
+                ytModal.classList.remove("active");
+                ytIframeContainer.innerHTML = ""; // Destroy iframe to stop video playback
+                document.body.style.overflow = ""; // Restore scrolling
+            };
+
+            ytCloseBtn.addEventListener("click", closeModal);
+            ytModal.addEventListener("click", (e) => {
+                if (e.target === ytModal) closeModal();
+            });
+        });
     </script>
 </body>
 </html>

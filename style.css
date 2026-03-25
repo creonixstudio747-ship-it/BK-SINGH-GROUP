@@ -710,6 +710,193 @@ footer {
   font-size: 0.85rem;
 }
 
+/* YouTube Feed Section */
+.youtube-feed {
+  padding: 100px 2rem;
+}
+
+.feed-grid {
+  gap: 2.5rem;
+}
+
+.video-card {
+  grid-column: span 6; /* 2 column grid on desktop */
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.video-card:hover {
+  transform: translate3d(0, -8px, 0);
+  border-color: rgba(158, 255, 118, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(158, 255, 118, 0.2);
+}
+
+.video-thumbnail-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  overflow: hidden;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.video-thumbnail {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  box-shadow: inset 0 0 20px rgba(158, 255, 118, 0.1); /* Subtle green glow */
+}
+
+.video-thumbnail-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  box-shadow: inset 0 0 15px rgba(158, 255, 118, 0.15);
+  pointer-events: none;
+}
+
+.video-card:hover .video-thumbnail {
+  transform: scale(1.05);
+}
+
+.play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 64px;
+  height: 64px;
+  background: rgba(13, 13, 13, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(158, 255, 118, 0.3);
+  box-shadow: 0 0 20px rgba(158, 255, 118, 0.4);
+}
+
+.play-icon i {
+  margin-left: 4px; /* Optical centering for play icon */
+  color: var(--cyber-green);
+  width: 28px; height: 28px;
+}
+
+.video-card:hover .play-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.video-meta {
+  padding: 1.5rem;
+}
+
+.video-title {
+  font-family: var(--font-main);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.video-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Lightbox Modal */
+.yt-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100vh;
+  background: rgba(8, 8, 8, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  transform: translate3d(0, 0, 0);
+}
+
+.yt-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.yt-modal-content {
+  width: 90%;
+  max-width: 1000px;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1);
+  transform: scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.yt-modal-overlay.active .yt-modal-content {
+  transform: scale(1);
+}
+
+.yt-close-btn {
+  position: absolute;
+  top: -40px; right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.yt-close-btn:hover {
+  color: #ff4444;
+}
+
+.yt-iframe-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #000;
+}
+
+.yt-iframe-container iframe {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border: none;
+}
+
+.spinning {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin { 
+  100% { transform: rotate(360deg); } 
+}
+
 /* Responsive Grid - Mobile First Approach adjustment */
 
 /* Mobile Menu Overlay */
@@ -788,6 +975,9 @@ footer {
   }
   .module-card, .pricing-card {
     grid-column: span 6;
+  }
+  .video-card {
+    grid-column: span 12; /* Single column on mobile/tablet */
   }
   .mentor-profile {
     flex-direction: column;
