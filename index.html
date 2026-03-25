@@ -638,9 +638,6 @@
         type="text/javascript"></script>
 
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
         async function initClerk() {
             try {
                 await window.Clerk.load({
@@ -934,7 +931,7 @@
                     } finally {
                         btnSendCode.innerHTML = 'Send Verification Code <i data-lucide="arrow-right"></i>';
                         btnSendCode.disabled = false;
-                        lucide.createIcons();
+                        if (window.lucide) window.lucide.createIcons();
                     }
                 });
 
