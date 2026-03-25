@@ -1112,6 +1112,14 @@
         });
     </script>
 
+    <!-- Generic Resource Iframe Modal -->
+    <div id="resourceModal" class="cyber-modal">
+        <div class="cyber-modal-content glass-card" style="width: 95%; max-width: 1000px; padding: 1.5rem; height: 85vh; display: flex; flex-direction: column;">
+            <button id="resourceCloseBtn" class="modal-close-btn" style="top: -15px; right: -15px; z-index: 100; background: #000;"><i data-lucide="x"></i></button>
+            <div id="resourceIframeContainer" style="flex: 1; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; position: relative;"></div>
+        </div>
+    </div>
+
     <!-- Expertise Details Modal -->
     <div id="expertiseModal" class="cyber-modal">
         <div class="cyber-modal-content glass-card">
@@ -1324,30 +1332,97 @@
             hubState.level = 4;
             renderHub();
         }
+        let hubDataStore = [];
+        let isHubDataLoaded = false;
+        let currentFilteredChapters = [];
+        let currentChapterData = null;
+
+        async function fetchHubData() {
+            try {
+                const res = await fetch("https://docs.google.com/spreadsheets/d/1ceVGbODWIbVfzKfY54SEfgj97bAbeKwtr41KRbl5RXk/export?format=csv");
+                const text = await res.text();
+                hubDataStore = parseCSV(text);
+                isHubDataLoaded = true;
+                if(hubState.level === 4) renderChapters(); // Re-render if hanging on loader
+            } catch(err) {
+                console.error("Failed to fetch sheet", err);
+            }
+        }
+
+        function parseCSV(str) {
+            const arr = [];
+            let quote = false;
+            let row = 0, col = 0, c = 0;
+            for (; c < str.length; c++) {
+                var cc = str[c], nc = str[c+1];
+                arr[row] = arr[row] || [];
+                arr[row][col] = arr[row][col] || '';
+                if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+                if (cc == '"') { quote = !quote; continue; }
+                if (cc == ',' && !quote) { ++col; continue; }
+                if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+                if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+                if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+                arr[row][col] += cc;
+            }
+            return arr.slice(1).map(r => ({
+                boards: (r[0]||'').trim().toUpperCase(),
+                class: (r[1]||'').trim(),
+                subject: (r[2]||'').trim().toUpperCase(),
+                chapter: (r[3]||'').trim(),
+                notes: (r[4]||'').trim(),
+                quiz: (r[5]||'').trim(),
+                lectures: (r[6]||'').trim(),
+                pyq: (r[7]||'').trim(),
+                extra: (r[8]||'').trim()
+            })).filter(r => r.boards && r.class);
+        }
 
         function renderChapters() {
             const list = document.getElementById('chapterList');
             const path = hubState.subSubject 
-                ? `${hubState.board} > ${hubState.class} > Social/S > ${hubState.subSubject}`
+                ? `${hubState.board} > ${hubState.class} > Social Science > ${hubState.subSubject}`
                 : `${hubState.board} > ${hubState.class} > ${hubState.subject}`;
             document.getElementById('lblLevel4').innerText = path;
             
-            const subjectName = hubState.subSubject || hubState.subject;
-            const chapters = [
-                `Chapter 1: Basics of ${subjectName}`, 
-                `Chapter 2: Core Concepts of ${subjectName}`, 
-                `Chapter 3: Advanced Problems and Mock Tests`,
-                `Chapter 4: Previous Year Question (PYQ) Analysis`
-            ];
-            list.innerHTML = chapters.map((ch, i) => `
-                <div class="hub-list-item" onclick="selectChapter('${ch}')">
-                    <span><b>0${i+1}.</b> ${ch}</span>
-                    <i data-lucide="chevron-right"></i>
-                </div>
-            `).join('');
+            if(!isHubDataLoaded) {
+                list.innerHTML = `<div class="hub-loader"><div class="pulse-circle"></div><span>Fetching Live Data...</span></div>`;
+                return;
+            }
+            
+            const filterBoard = hubState.board.toUpperCase();
+            const filterClass = hubState.class.replace('th Class', ''); // e.g., "9"
+            const targetSubject = hubState.subject === 'Social Science' ? hubState.subSubject : hubState.subject;
+            const filterSubject = targetSubject.toUpperCase();
+
+            currentFilteredChapters = hubDataStore.filter(r => 
+                r.boards === filterBoard && 
+                r.class === filterClass && 
+                r.subject === filterSubject
+            );
+
+            if(currentFilteredChapters.length === 0) {
+                list.innerHTML = `<div style="text-align: center; color: var(--text-secondary); padding: 2rem;">No chapters available yet.</div>`;
+            } else {
+                list.innerHTML = currentFilteredChapters.map((ch, i) => `
+                    <div class="hub-list-item" onclick="selectChapterObj(${i})">
+                        <span><b>0${i+1}.</b> ${ch.chapter}</span>
+                        <i data-lucide="chevron-right"></i>
+                    </div>
+                `).join('');
+            }
+            if(window.lucide) setTimeout(() => lucide.createIcons(), 10);
+        }
+
+        function selectChapterObj(idx) {
+            currentChapterData = currentFilteredChapters[idx];
+            hubState.chapter = currentChapterData.chapter;
+            hubState.level = 5;
+            renderHub();
         }
 
         function selectChapter(ch) {
+            // Keep for backwards compatibility
             hubState.chapter = ch;
             hubState.level = 5;
             renderHub();
@@ -1364,6 +1439,38 @@
 
         function renderActions() {
             document.getElementById('lblLevel5').innerText = `${hubState.chapter}`;
+            const grid = document.getElementById('actionGrid');
+            
+            if(!currentChapterData) return;
+            grid.innerHTML = '';
+            
+            const actionsMap = [
+                { key: 'notes', label: 'Notes', icon: 'file-text' },
+                { key: 'pyq', label: 'Previous Year Questions', icon: 'history' },
+                { key: 'lectures', label: 'Lectures', icon: 'video' },
+                { key: 'quiz', label: 'Quiz', icon: 'help-circle' },
+                { key: 'extra', label: 'Some Extra Tips', icon: 'zap' }
+            ];
+            
+            let html = '';
+            actionsMap.forEach(act => {
+                const val = currentChapterData[act.key];
+                if (val && val.trim() !== '') {
+                    html += `
+                        <div class="hub-card action-card" onclick="openResourceModal('${act.key}', '${encodeURIComponent(val)}')">
+                            <i data-lucide="${act.icon}"></i>
+                            <span>${act.label}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            if(html === '') {
+                grid.innerHTML = `<div style="grid-column: span 5; text-align: center; color: var(--text-secondary); padding: 2rem;">Resources are being pushed soon.</div>`;
+            } else {
+                grid.innerHTML = html;
+            }
+            if(window.lucide) setTimeout(() => lucide.createIcons(), 10);
         }
 
         function goLevel(lvl) {
@@ -1381,8 +1488,45 @@
             });
         });
 
+        // Resource Modal Logic
+        function openResourceModal(type, encodedVal) {
+            const val = decodeURIComponent(encodedVal);
+            const modal = document.getElementById('resourceModal');
+            const container = document.getElementById('resourceIframeContainer');
+            
+            if (type === 'extra') {
+                container.innerHTML = `<div style="color: #fff; padding: 2.5rem; font-size: 1.15rem; line-height: 1.8; max-height: 80vh; overflow-y: auto;">
+                    <h3 style="color: var(--cyber-green); margin-bottom: 1rem;">Extra Tips</h3>
+                    ${val.replace(/\\n/g, '<br>')}
+                </div>`;
+            } else {
+                let finalUrl = val;
+                if(finalUrl.includes('youtube.com/watch?v=')) {
+                    finalUrl = finalUrl.replace('watch?v=', 'embed/');
+                }
+                container.innerHTML = `<iframe src="${finalUrl}" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 12px; min-height: 60vh;"></iframe>`;
+            }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.getElementById('resourceCloseBtn').addEventListener('click', () => {
+            document.getElementById('resourceModal').classList.remove('active');
+            document.getElementById('resourceIframeContainer').innerHTML = '';
+            document.body.style.overflow = '';
+        });
+
+        document.getElementById('resourceModal').addEventListener('click', (e) => {
+            if(e.target === document.getElementById('resourceModal')) {
+                document.getElementById('resourceModal').classList.remove('active');
+                document.getElementById('resourceIframeContainer').innerHTML = '';
+                document.body.style.overflow = '';
+            }
+        });
+
         // Initialize App Hub
         document.addEventListener("DOMContentLoaded", () => {
+            fetchHubData();
             renderHub();
         });
     </script>
