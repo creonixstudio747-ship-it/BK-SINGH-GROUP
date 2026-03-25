@@ -1625,23 +1625,71 @@
             addAiMessage(text, 'user');
             aiInput.value = '';
 
-            // Guardrail logic / Fake Response Engine
+        async function fetchAcademicAnswer(query) {
+            try {
+                // Remove common conversational words to isolate the core academic term using word boundaries
+                let cleanQuery = query.toLowerCase().replace(/\b(what is|explain|define|tell me about|how does|what are|the|a)\b/gi, '').trim();
+                // We keep 'law of' so that "law of force" searches for "law of force" explicitly if wanted, but "force" is better. Actually let Wikipedia handle it.
+                if(!cleanQuery) cleanQuery = query;
+
+                // Wikipedia Open Search API
+                const searchRes = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanQuery)}&utf8=&format=json&origin=*`);
+                const searchData = await searchRes.json();
+                
+                if(searchData.query && searchData.query.search.length > 0) {
+                    // Get the exact title of the best match
+                    const title = searchData.query.search[0].title;
+                    // Fetch the summary via REST API
+                    const pageRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+                    const pageData = await pageRes.json();
+                    
+                    if(pageData.extract) {
+                        return pageData.extract + `<br><br><small style="color:var(--cyber-green); opacity:0.8;"><i>Source: Global Academic Database</i></small>`;
+                    }
+                }
+                return "That's an advanced concept! While I'm still learning to parse complex technical problems entirely, I recommend checking our detailed Lectures in the Learning Hub for deep-dive answers on this topic.";
+            } catch (err) {
+                 return "I'm having trouble connecting to my academic database right now. Please check your internet connection or try checking the Learning Hub!";
+            }
+        }
+
+        // Guardrail logic / Academic Response Engine
+        function handleAiInteraction() {
+            const text = aiInput.value.trim();
+            if(!text) return;
+            
+            // Add User msg
+            addAiMessage(text, 'user');
+            aiInput.value = '';
+
             const lText = text.toLowerCase();
             const forbidden = ['movie', 'game', 'gaming', 'play', 'song', 'dance', 'film', 'music', 'pubg', 'bgmi', 'free fire', 'youtube', 'joke'];
             
-            let isForbidden = forbidden.some(k => lText.includes(k));
+            let isForbidden = forbidden.some(k => lText.includes(k) && !lText.includes("documentary"));
             
-            setTimeout(() => {
-                if(isForbidden) {
-                    addAiMessage("I am your B.K. Singh Classes Academic Mentor. Let's stay focused on your studies! How can I help you with your subjects today?", 'bot');
-                } else if(lText.includes('hi') || lText.includes('hello')) {
-                    addAiMessage("Hello! Ready to conquer your syllabus today?", 'bot');
-                } else if(lText.includes('math') || lText.includes('science') || lText.includes('history') || lText.includes('english')) {
-                    addAiMessage(`Great choice! You can find the latest chapters for that subject in the Learning Hub above. Need help understanding a specific concept?`, 'bot');
-                } else {
-                    addAiMessage("That's an interesting question. I am currently in Beta and learning to parse complex 9th-12th grade problems. Please check our detailed Lectures in the Learning Hub for deep-dive answers!", 'bot');
-                }
-            }, 600); // Simulated network delay
+            if(isForbidden) {
+                setTimeout(() => addAiMessage("I am your B.K. Singh Classes Academic Mentor. Let's stay focused on your studies! How can I help you with your subjects today?", 'bot'), 600);
+            } else if(lText.match(/\b(hi|hello|hey|start)\b/)) {
+                setTimeout(() => addAiMessage("Hello! Ready to conquer your syllabus today?", 'bot'), 600);
+            } else {
+                // Show typing indicator
+                const typingId = "typing-" + Date.now();
+                setTimeout(() => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.id = typingId;
+                    msgDiv.className = `ai-message ai-bot`;
+                    msgDiv.innerHTML = `<div class="ai-bubble" style="opacity: 0.7;"><i>Researching concept...</i></div>`;
+                    aiChatBody.appendChild(msgDiv);
+                    aiChatBody.scrollTop = aiChatBody.scrollHeight;
+                    
+                    // Fetch real answer
+                    fetchAcademicAnswer(text).then(answer => {
+                        const tEl = document.getElementById(typingId);
+                        if(tEl) tEl.remove();
+                        addAiMessage(answer, 'bot');
+                    });
+                }, 400);
+            }
         }
 
         aiSendBtn.addEventListener('click', handleAiInteraction);
