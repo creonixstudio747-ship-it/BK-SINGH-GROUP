@@ -2205,46 +2205,62 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
             try {
                 const res = await fetch(GALLERY_SHEET_URL);
                 const text = await res.text();
-                const rows = parseCSV(text); // Re-use existing parseCSV
+                const rows = parseCSV(text); 
                 renderDynamicGalleries(rows);
             } catch (err) {
                 console.error("Gallery Sync Failed:", err);
             }
         }
 
+        function transformDriveUrl(url) {
+            if (!url) return '';
+            if (url.includes('drive.google.com/file/d/')) {
+                const id = url.split('/file/d/')[1].split('/')[0];
+                return `https://drive.google.com/uc?export=view&id=${id}`;
+            }
+            return url;
+        }
+
         function renderDynamicGalleries(rows) {
             const campusGrid = document.getElementById('campusGallery');
             const libraryGrid = document.getElementById('libraryGallery');
             
-            // Filter by section
-            const campusData = rows.filter(r => r.boards === 'LOCATION'); // Shared parser uses 'boards' for col 0
+            // Default fallbacks (local assets)
+            const campusFallbacks = ['assets/side.jpg', 'assets/outerside.jpg', 'assets/poster.jpg'];
+
+            const campusData = rows.filter(r => r.boards === 'LOCATION');
             const libraryData = rows.filter(r => r.boards === 'LIBRARY');
 
             if (campusData.length > 0) {
-                // Update campus gallery if links are valid
-                const validCampus = campusData.filter(r => r.subject && r.subject.includes('http'));
-                if (validCampus.length > 0) {
-                    campusGrid.innerHTML = validCampus.map(r => `
-                        <div class="gallery-item" onclick="openLightbox('${r.subject}')">
-                            <img src="${r.subject}" alt="Campus View">
+                const html = campusData.map((r, i) => {
+                    const rawUrl = r.subject || '';
+                    const url = transformDriveUrl(rawUrl);
+                    const fallback = campusFallbacks[i] || campusFallbacks[0];
+                    return `
+                        <div class="gallery-item" onclick="openLightbox('${url || fallback}')">
+                            <img src="${url}" alt="Campus View" onerror="this.src='${fallback}'; this.parentElement.onclick=()=>openLightbox('${fallback}')">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
                         </div>
-                    `).join('');
-                }
+                    `;
+                }).join('');
+                if (html) campusGrid.innerHTML = html;
             }
 
             if (libraryData.length > 0) {
                 const validLibrary = libraryData.filter(r => r.subject && r.subject.includes('http'));
                 if (validLibrary.length > 0) {
-                    libraryGrid.innerHTML = validLibrary.map(r => `
-                        <div class="gallery-item" onclick="openLightbox('${r.subject}')">
-                            <img src="${r.subject}" alt="Library Resource">
-                            <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
-                        </div>
-                    `).join('');
+                    libraryGrid.innerHTML = validLibrary.map(r => {
+                        const url = transformDriveUrl(r.subject);
+                        return `
+                            <div class="gallery-item" onclick="openLightbox('${url}')">
+                                <img src="${url}" alt="Library Resource" onerror="this.parentElement.style.display='none'">
+                                <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
+                            </div>
+                        `;
+                    }).join('');
                 } else {
-                    // Placeholder if no library URLs yet
-                    libraryGrid.innerHTML = `<div class="mt-empty-state"><i data-lucide="book" style="opacity:0.2"></i><p>Library Archive Syncing...</p></div>`;
+                    libraryGrid.style.display = 'none'; // Hide if no library images yet
+                    libraryGrid.previousElementSibling.style.display = 'none'; // Hide header
                 }
             }
             if (window.lucide) lucide.createIcons();
