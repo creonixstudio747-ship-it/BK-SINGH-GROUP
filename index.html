@@ -1390,10 +1390,14 @@
                 return;
             }
             
-            const filterBoard = hubState.board.toUpperCase();
-            const filterClass = hubState.class.replace('th Class', ''); // e.g., "9"
+            const filterBoard = hubState.board.toUpperCase().trim();
+            const filterClass = hubState.class.replace('th Class', '').trim(); // e.g., "9"
             const targetSubject = hubState.subject === 'Social Science' ? hubState.subSubject : hubState.subject;
-            const filterSubject = targetSubject.toUpperCase();
+            let filterSubject = targetSubject.toUpperCase().trim();
+            
+            // Map UI subject names to Exact Sheet Subject names
+            if (filterSubject === "MATHEMATICS") filterSubject = "MATHS";
+            if (filterSubject === "POLITICAL SCIENCE (CIVICS)") filterSubject = "CIVICS";
 
             currentFilteredChapters = hubDataStore.filter(r => 
                 r.boards === filterBoard && 
