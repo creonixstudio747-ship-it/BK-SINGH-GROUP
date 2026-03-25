@@ -32,7 +32,6 @@
                 <a href="#" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
                 <a href="#" class="nav-item"><i data-lucide="book-open"></i> My Courses</a>
                 <a href="#" class="nav-item" id="navMockTest"><i data-lucide="file-check-2"></i> Mock Tests</a>
-                <a href="#results-hub" class="nav-item"><i data-lucide="graduation-cap"></i> Results</a>
                 <a href="#" class="nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
                 <a href="#" class="nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
             </nav>
@@ -56,7 +55,6 @@
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="book-open"></i> My Courses</a>
             <a href="#" class="nav-item mobile-nav-item" id="mobileNavMockTest"><i data-lucide="file-check-2"></i> Mock Tests</a>
-            <a href="#results-hub" class="nav-item mobile-nav-item"><i data-lucide="graduation-cap"></i> Results</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="briefcase"></i> Placement Cell</a>
             <a href="#" class="nav-item mobile-nav-item"><i data-lucide="pie-chart"></i> Analytics</a>
             <a id="mobileLoginBtn" href="#" class="btn btn-primary"
@@ -516,57 +514,6 @@
             </div>
         </section>
 
-        <!-- Academic Results Hub (Marksheet) -->
-        <section id="results-hub" class="results-hub container reveal">
-            <div class="results-container">
-                <div class="section-header">
-                    <h2 class="cyber-text">Academic Results Hub</h2>
-                    <p>Access your official marksheets and performance board</p>
-                </div>
-
-                <div class="search-box-wrap glass-card">
-                    <form id="resultsForm" class="results-form" onsubmit="handleResultSearch(event)">
-                        <div class="input-group">
-                            <label for="rollNum">Roll Number / Registration ID</label>
-                            <input type="text" id="rollNum" placeholder="e.g. 2026BKS001" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="examCat">Examination Category</label>
-                            <select id="examCat">
-                                <option value="board">Final Board Examination (10th/12th)</option>
-                                <option value="mock">Periodic Mock Marathon</option>
-                                <option value="scholarship">B.K. Singh Scholarship Test</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-search">
-                            <i data-lucide="search"></i> Check Results
-                        </button>
-                    </form>
-
-                    <div id="searchingLoader" class="searching-loader">
-                        <div class="cyber-spinner"></div>
-                        <p class="cyber-text">Querying B.K. Singh Secure Database...</p>
-                    </div>
-
-                    <div id="resultCard" class="result-card">
-                        <div class="result-header">
-                            <div class="student-info">
-                                <h3 id="resName">Student Name</h3>
-                                <p id="resDetails">Class 10th | CBSE Board</p>
-                            </div>
-                            <div class="result-badge">PASSED (A+)</div>
-                        </div>
-                        <div class="marks-grid">
-                            <div class="mark-item"><span class="mark-label">Mathematics</span> <span class="mark-value">98/100</span></div>
-                            <div class="mark-item"><span class="mark-label">Science</span> <span class="mark-value">95/100</span></div>
-                            <div class="mark-item"><span class="mark-label">English</span> <span class="mark-value">92/100</span></div>
-                            <div class="mark-item"><span class="mark-label">Social Science</span> <span class="mark-value">94/100</span></div>
-                        </div>
-                        <button class="btn-download"><i data-lucide="download"></i> Download Verified Marksheet (PDF)</button>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Campus Location -->
         <section class="campus-location container reveal">
@@ -2266,29 +2213,6 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
                 }
             }
             if (window.lucide) lucide.createIcons();
-        }
-
-        // Results Hub Logic
-        function handleResultSearch(e) {
-            e.preventDefault();
-            const roll = document.getElementById('rollNum').value;
-            const form = document.getElementById('resultsForm');
-            const loader = document.getElementById('searchingLoader');
-            const card = document.getElementById('resultCard');
-
-            form.style.display = 'none';
-            loader.style.display = 'flex';
-            card.style.display = 'none';
-
-            // Simulate DB Query
-            setTimeout(() => {
-                loader.style.display = 'none';
-                card.style.display = 'block';
-                
-                // Set mock data based on input
-                document.getElementById('resName').innerText = roll.includes('001') ? "Aditya Sharma" : "B.K. Singh Aspirant";
-                document.getElementById('resDetails').innerText = "Class 12th | PCM Stream | BSEB";
-            }, 2000);
         }
 
         // Initialize on load
