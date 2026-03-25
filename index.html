@@ -764,35 +764,56 @@
                             }
                         });
 
-                        // Dropdown Toggle
-                        const profileToggleBtn = document.getElementById('profileToggleBtn');
-                        const profileDropdown = document.getElementById('profileDropdown');
-
-                        profileToggleBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            profileDropdown.classList.toggle('active');
-                            profileToggleBtn.querySelector('.profile-chevron').classList.toggle('rotate');
-                        });
-
-                        // Close dropdown when clicking outside
-                        document.addEventListener('click', (e) => {
-                            if (!customProfileContainer.contains(e.target)) {
-                                profileDropdown.classList.remove('active');
-                                profileToggleBtn.querySelector('.profile-chevron').classList.remove('rotate');
-                            }
-                        });
-
-                        // Logout Button
-                        document.getElementById('logoutBtn').addEventListener('click', () => {
-                            window.Clerk.signOut().then(() => { window.location.reload(); });
-                        });
                     }
                 };
 
-                // Update UI if logged in
-                if (window.Clerk.user) {
-                    updateProfileUI();
-                }
+                // Listen for Auth State Changes
+                let profileEventsBound = false;
+                window.Clerk.addListener(({ user }) => {
+                    if (user) {
+                        updateProfileUI();
+                        // Make sure we only bind the profile dropdown events once
+                        if (!profileEventsBound) {
+                            const profileToggleBtn = document.getElementById('profileToggleBtn');
+                            const profileDropdown = document.getElementById('profileDropdown');
+                            const customProfileContainer = document.getElementById('customProfileContainer');
+
+                            if (profileToggleBtn && profileDropdown) {
+                                profileToggleBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    profileDropdown.classList.toggle('active');
+                                    profileToggleBtn.querySelector('.profile-chevron').classList.toggle('rotate');
+                                });
+
+                                document.addEventListener('click', (e) => {
+                                    if (customProfileContainer && !customProfileContainer.contains(e.target)) {
+                                        profileDropdown.classList.remove('active');
+                                        profileToggleBtn.querySelector('.profile-chevron').classList.remove('rotate');
+                                    }
+                                });
+                            }
+
+                            const logoutBtn = document.getElementById('logoutBtn');
+                            if (logoutBtn) {
+                                logoutBtn.addEventListener('click', () => {
+                                    window.Clerk.signOut().then(() => { window.location.reload(); });
+                                });
+                            }
+                            profileEventsBound = true;
+                        }
+
+                        // Hide mobile login button as well
+                        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+                        if (mobileLoginBtn) mobileLoginBtn.style.display = 'none';
+                    } else {
+                        // User signed out state
+                        if (navLoginBtn) navLoginBtn.style.display = 'inline-flex';
+                        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+                        if (mobileLoginBtn) mobileLoginBtn.style.display = 'flex';
+                        const customProfileContainer = document.getElementById('customProfileContainer');
+                        if (customProfileContainer) customProfileContainer.style.display = 'none';
+                    }
+                });
 
                 // Attach click handlers
                 const handleAuthClick = (e, metadata = null) => {
