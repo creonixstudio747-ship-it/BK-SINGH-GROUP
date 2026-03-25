@@ -2228,17 +2228,19 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
             // Default fallbacks (local assets)
             const campusFallbacks = ['assets/side.jpg', 'assets/outerside.jpg', 'assets/poster.jpg'];
 
-            const campusData = rows.filter(r => r.boards === 'LOCATION');
-            const libraryData = rows.filter(r => r.boards === 'LIBRARY');
+            const campusData = rows.filter(r => (r.boards || '').toUpperCase().trim() === 'LOCATION');
+            const libraryData = rows.filter(r => (r.boards || '').toUpperCase().trim() === 'LIBRARY');
 
             if (campusData.length > 0) {
                 const html = campusData.map((r, i) => {
                     const rawUrl = r.subject || '';
                     const url = transformDriveUrl(rawUrl);
                     const fallback = campusFallbacks[i] || campusFallbacks[0];
+                    // If no URL provided at all, use fallback immediately
+                    const displayUrl = url || fallback;
                     return `
-                        <div class="gallery-item" onclick="openLightbox('${url || fallback}')">
-                            <img src="${url}" alt="Campus View" onerror="this.src='${fallback}'; this.parentElement.onclick=()=>openLightbox('${fallback}')">
+                        <div class="gallery-item" onclick="openLightbox('${displayUrl}')">
+                            <img src="${displayUrl}" alt="Campus View" onerror="this.src='${fallback}'; this.parentElement.onclick=()=>openLightbox('${fallback}')">
                             <div class="gallery-overlay"><i data-lucide="maximize-2"></i></div>
                         </div>
                     `;
