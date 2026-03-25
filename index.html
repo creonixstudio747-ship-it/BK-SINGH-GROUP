@@ -1705,9 +1705,9 @@
             // ==========================================
             // ADMIN: PUT YOUR GEMINI API KEY BELOW 👇
             // ==========================================
-            const API_KEY = "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ";
+            const API_KEY = "AIzaSyC9RAbAE_Iaf0Y7Ao25z0kpsJqgTJcP4SE";
 
-            if (API_KEY === "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ" || !API_KEY) {
+            if (!API_KEY || API_KEY.trim() === "") {
                 return "<b>Admin Setup Required:</b> My Gemini brain is disconnected! Please open <code>index.html</code>, search for <code>YOUR_GEMINI_API_KEY_HERE</code>, and paste your real Google API key.";
             }
 
