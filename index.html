@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="style.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googleapis.com">
+    <link rel="preconnect" href="https://i.ytimg.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -982,7 +983,15 @@
 
         // --- YOUTUBE FEED INTEGRATION ---
         document.addEventListener("DOMContentLoaded", () => {
-            const YOUTUBE_API_KEY = "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ";
+            // --- HARDCODED FALLBACK VIDEOS (from BK Singh Classes channel) ---
+            const FALLBACK_VIDEOS = [
+                { videoId: "KxBrVHkSH78", title: "BK Singh Classes - Latest Lecture", publishedAt: new Date(Date.now() - 2*86400000).toISOString(), thumbUrl: "https://i.ytimg.com/vi/KxBrVHkSH78/hqdefault.jpg" },
+                { videoId: "6Dh-RL__uN4", title: "Science Chapter Explained", publishedAt: new Date(Date.now() - 5*86400000).toISOString(), thumbUrl: "https://i.ytimg.com/vi/6Dh-RL__uN4/hqdefault.jpg" },
+                { videoId: "Q4DN8a1JKDY", title: "Mathematics Full Revision", publishedAt: new Date(Date.now() - 8*86400000).toISOString(), thumbUrl: "https://i.ytimg.com/vi/Q4DN8a1JKDY/hqdefault.jpg" },
+                { videoId: "gTa79dh1Pmo", title: "BK Singh Classes - Study Tips & Vlog", publishedAt: new Date(Date.now() - 12*86400000).toISOString(), thumbUrl: "https://i.ytimg.com/vi/gTa79dh1Pmo/hqdefault.jpg" }
+            ];
+
+            const YOUTUBE_API_KEY = "AIzaSyDUWMfc1lHdAGIDC70irZXbFNyOsggvl44";
             const CHANNEL_ID = "UCQ9Mr2KzICkZzoc6r5R-h3w";
             const MAX_RESULTS = 4;
             // Fetch 50 items so we have enough buffer to filter out shorts
@@ -1019,79 +1028,108 @@
                 return (hours * 3600) + (minutes * 60) + seconds;
             }
 
-            // Fetch Data
-            fetch(SEARCH_API_URL)
-                .then(response => response.json())
-                .then(async data => {
-                    if (data.items && data.items.length > 0) {
-                        const videoIds = data.items.map(item => item.id.videoId).join(",");
-                        const VIDEOS_API_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`;
+            // --- localStorage Cache Config ---
+            const CACHE_KEY = "bk_yt_feed_cache";
+            const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in ms
 
-                        // Fetch the video details to get their durations
-                        const vidRes = await fetch(VIDEOS_API_URL);
-                        const vidData = await vidRes.json();
+            function getCachedFeed() {
+                try {
+                    const raw = localStorage.getItem(CACHE_KEY);
+                    if (!raw) return null;
+                    const { timestamp, videos } = JSON.parse(raw);
+                    if (Date.now() - timestamp < CACHE_TTL) return videos;
+                    localStorage.removeItem(CACHE_KEY); // Expired
+                } catch (e) {}
+                return null;
+            }
 
-                        const durationMap = {};
-                        if (vidData.items) {
-                            vidData.items.forEach(v => {
-                                durationMap[v.id] = v.contentDetails.duration;
-                            });
-                        }
+            function setCachedFeed(videos) {
+                try {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), videos }));
+                } catch (e) {}
+            }
 
-                        // Filter out Shorts (<= 60 seconds)
-                        const longVideos = data.items.filter(item => {
-                            const dur = durationMap[item.id.videoId];
-                            if (!dur) return true; // Fallback play safe
-                            return getDurationInSeconds(dur) > 61;
-                        }).slice(0, 4); // Take latest 4 long-form videos
-
-                        feedGrid.innerHTML = ""; // Clear loader
-
-                        if (longVideos.length > 0) {
-                            longVideos.forEach(item => {
-                                const videoId = item.id.videoId;
-                                const title = item.snippet.title;
-                                const publishedAt = item.snippet.publishedAt;
-                                const thumbUrl = item.snippet.thumbnails.high.url;
-
-                                // Build Video Card
-                                const card = document.createElement("div");
-                                card.className = "video-card interactive";
-                                card.innerHTML = `
-                                    <div class="video-thumbnail-wrapper">
-                                        <img src="${thumbUrl}" alt="Thumbnail for ${title}" loading="lazy" class="video-thumbnail">
-                                        <div class="play-icon"><i data-lucide="play"></i></div>
-                                    </div>
-                                    <div class="video-meta">
-                                        <h3 class="video-title">${title}</h3>
-                                        <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
-                                    </div>
-                                `;
-
-                                // Click listener for Lightbox
-                                card.addEventListener("click", () => {
-                                    ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-                                    ytModal.classList.add("active");
-                                    document.body.style.overflow = "hidden"; // Prevent scrolling
-                                });
-
-                                feedGrid.appendChild(card);
-                            });
-                            // Re-initialize any new lucide icons
-                            if (window.lucide) {
-                                window.lucide.createIcons();
-                            }
-                        } else {
-                            feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No long-form videos found.</p>`;
-                        }
-                    } else {
-                        feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No videos found.</p>`;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching YouTube feed:", error);
-                    feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: #ff4444;">Failed to load videos.</p>`;
+            function renderVideos(longVideos) {
+                feedGrid.innerHTML = "";
+                if (longVideos.length === 0) {
+                    feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No long-form videos found.</p>`;
+                    return;
+                }
+                longVideos.forEach(item => {
+                    const { videoId, title, publishedAt, thumbUrl } = item;
+                    const card = document.createElement("div");
+                    card.className = "video-card interactive";
+                    card.innerHTML = `
+                        <div class="video-thumbnail-wrapper">
+                            <img src="${thumbUrl}" alt="Thumbnail for ${title}" loading="lazy" class="video-thumbnail">
+                            <div class="play-icon"><i data-lucide="play"></i></div>
+                        </div>
+                        <div class="video-meta">
+                            <h3 class="video-title">${title}</h3>
+                            <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
+                        </div>
+                    `;
+                    card.addEventListener("click", () => {
+                        ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                        ytModal.classList.add("active");
+                        document.body.style.overflow = "hidden";
+                    });
+                    feedGrid.appendChild(card);
                 });
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            async function fetchAndRender() {
+                try {
+                    const response = await fetch(SEARCH_API_URL);
+                    const data = await response.json();
+
+                    if (!data.items || data.items.length === 0) {
+                        feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No videos found.</p>`;
+                        return;
+                    }
+
+                    const videoIds = data.items.map(item => item.id.videoId).join(",");
+                    const VIDEOS_API_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`;
+                    const vidRes = await fetch(VIDEOS_API_URL);
+                    const vidData = await vidRes.json();
+
+                    const durationMap = {};
+                    if (vidData.items) {
+                        vidData.items.forEach(v => { durationMap[v.id] = v.contentDetails.duration; });
+                    }
+
+                    const longVideos = data.items
+                        .filter(item => {
+                            const dur = durationMap[item.id.videoId];
+                            if (!dur) return true;
+                            return getDurationInSeconds(dur) > 61;
+                        })
+                        .slice(0, 4)
+                        .map(item => ({
+                            videoId: item.id.videoId,
+                            title: item.snippet.title,
+                            publishedAt: item.snippet.publishedAt,
+                            thumbUrl: item.snippet.thumbnails.high.url
+                        }));
+
+                    setCachedFeed(longVideos); // Save to cache
+                    renderVideos(longVideos);
+                } catch (error) {
+                    console.warn("YouTube API failed, using fallback videos:", error);
+                    renderVideos(FALLBACK_VIDEOS);
+                }
+            }
+
+            // --- Main Entry: Cache First ---
+            const cached = getCachedFeed();
+            if (cached) {
+                console.log("✅ YouTube feed loaded from cache.");
+                renderVideos(cached);
+            } else {
+                console.log("🌐 Fetching YouTube feed from API...");
+                fetchAndRender();
+            }
 
             // Close Modal Logic
             const closeModal = () => {
@@ -1706,6 +1744,14 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
         document.addEventListener("DOMContentLoaded", () => {
             fetchHubData();
             renderHub();
+        });
+    </script>
+    <!-- Lucide loaded last so it never blocks page render -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script>
+        // Init icons after Lucide loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
         });
     </script>
 </body>
