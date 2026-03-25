@@ -1220,6 +1220,40 @@
         });
     </script>
 
+    <!-- AI Mentor Chatbot Widget -->
+    <div id="aiChatWidget" class="ai-chat-widget">
+        <!-- Floating Action Button -->
+        <button id="aiFab" class="ai-fab">
+            <div class="ai-fab-ring"></div>
+            <i data-lucide="bot" class="ai-fab-icon"></i>
+        </button>
+
+        <!-- Chat Window -->
+        <div id="aiChatWindow" class="ai-chat-window glass-card">
+            <div class="ai-chat-header">
+                <div class="ai-header-info">
+                    <i data-lucide="bot" class="ai-header-icon"></i>
+                    <div>
+                        <h4>B.K. Singh AI Mentor</h4>
+                        <span class="ai-status">Study Mode: ON</span>
+                    </div>
+                </div>
+                <button id="aiCloseBtn" class="ai-close-btn"><i data-lucide="chevron-down"></i></button>
+            </div>
+            
+            <div id="aiChatBody" class="ai-chat-body">
+                <div class="ai-message ai-bot">
+                    <div class="ai-bubble">Hello! I am your dedicated study partner. Ask me anything about your 9th-12th subjects or our latest course updates.</div>
+                </div>
+            </div>
+            
+            <div class="ai-chat-input-area">
+                <input type="text" id="aiInput" placeholder="Ask about your syllabus..." autocomplete="off">
+                <button id="aiSendBtn"><i data-lucide="send"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- HIERARCHICAL HUB LOGIC -->
     <script>
         const hubState = { board: 'CBSE', level: 1, class: null, subject: null, subSubject: null, chapter: null };
@@ -1553,6 +1587,66 @@
                 document.getElementById('resourceIframeContainer').innerHTML = '';
                 document.body.style.overflow = '';
             }
+        });
+
+        // ==========================================
+        // AI Mentor Logic
+        // ==========================================
+        const aiFab = document.getElementById('aiFab');
+        const aiChatWindow = document.getElementById('aiChatWindow');
+        const aiCloseBtn = document.getElementById('aiCloseBtn');
+        const aiInput = document.getElementById('aiInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+        const aiChatBody = document.getElementById('aiChatBody');
+
+        function toggleAiChat() {
+            aiChatWindow.classList.toggle('active');
+            if(aiChatWindow.classList.contains('active')) {
+                setTimeout(() => aiInput.focus(), 300);
+            }
+        }
+
+        aiFab.addEventListener('click', toggleAiChat);
+        aiCloseBtn.addEventListener('click', toggleAiChat);
+
+        function addAiMessage(text, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `ai-message ${sender === 'user' ? 'ai-user' : 'ai-bot'}`;
+            msgDiv.innerHTML = `<div class="ai-bubble">${text}</div>`;
+            aiChatBody.appendChild(msgDiv);
+            aiChatBody.scrollTop = aiChatBody.scrollHeight;
+        }
+
+        function handleAiInteraction() {
+            const text = aiInput.value.trim();
+            if(!text) return;
+            
+            // Add User msg
+            addAiMessage(text, 'user');
+            aiInput.value = '';
+
+            // Guardrail logic / Fake Response Engine
+            const lText = text.toLowerCase();
+            const forbidden = ['movie', 'game', 'gaming', 'play', 'song', 'dance', 'film', 'music', 'pubg', 'bgmi', 'free fire', 'youtube', 'joke'];
+            
+            let isForbidden = forbidden.some(k => lText.includes(k));
+            
+            setTimeout(() => {
+                if(isForbidden) {
+                    addAiMessage("I am your B.K. Singh Classes Academic Mentor. Let's stay focused on your studies! How can I help you with your subjects today?", 'bot');
+                } else if(lText.includes('hi') || lText.includes('hello')) {
+                    addAiMessage("Hello! Ready to conquer your syllabus today?", 'bot');
+                } else if(lText.includes('math') || lText.includes('science') || lText.includes('history') || lText.includes('english')) {
+                    addAiMessage(`Great choice! You can find the latest chapters for that subject in the Learning Hub above. Need help understanding a specific concept?`, 'bot');
+                } else {
+                    addAiMessage("That's an interesting question. I am currently in Beta and learning to parse complex 9th-12th grade problems. Please check our detailed Lectures in the Learning Hub for deep-dive answers!", 'bot');
+                }
+            }, 600); // Simulated network delay
+        }
+
+        aiSendBtn.addEventListener('click', handleAiInteraction);
+        aiInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') handleAiInteraction();
         });
 
         // Initialize App Hub
