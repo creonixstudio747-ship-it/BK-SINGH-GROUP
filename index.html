@@ -653,31 +653,64 @@
                 <!-- Level 2: Class Selection -->
                 <div class="mt-panel hidden-right" id="mtLevel2">
                     <button class="mt-back-btn" onclick="mtGoBack(1)"><i data-lucide="arrow-left"></i> Boards</button>
-                    <div class="mt-grid mt-grid-2" style="margin-top: 1rem;">
+                    <div class="mt-grid mt-grid-4" style="margin-top: 1rem;">
                         <div class="mt-card interactive" onclick="mtSelectClass('9')">
                             <i data-lucide="graduation-cap"></i>
-                            <h3>9th Class</h3>
-                            <p>Foundation Module</p>
+                            <h3>9th</h3>
                         </div>
                         <div class="mt-card interactive" onclick="mtSelectClass('10')">
                             <i data-lucide="award"></i>
-                            <h3>10th Class</h3>
-                            <p>Board Excellence</p>
+                            <h3>10th</h3>
+                        </div>
+                        <div class="mt-card interactive" onclick="mtSelectClass('11')">
+                            <i data-lucide="book-open"></i>
+                            <h3>11th</h3>
+                        </div>
+                        <div class="mt-card interactive" onclick="mtSelectClass('12')">
+                            <i data-lucide="microscope"></i>
+                            <h3>12th</h3>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 3: Subject Selection -->
+                <!-- Level 3: Stream Selection (11th & 12th only) -->
                 <div class="mt-panel hidden-right" id="mtLevel3">
                     <button class="mt-back-btn" onclick="mtGoBack(2)"><i data-lucide="arrow-left"></i> Classes</button>
+                    <div class="mt-grid mt-grid-2" style="margin-top: 1rem;">
+                        <div class="mt-card interactive" onclick="mtSelectStream('PCM')">
+                            <i data-lucide="atom"></i>
+                            <h3>PCM</h3>
+                            <p>Physics, Chemistry, Maths</p>
+                        </div>
+                        <div class="mt-card interactive" onclick="mtSelectStream('PCB')">
+                            <i data-lucide="dna"></i>
+                            <h3>PCB</h3>
+                            <p>Physics, Chemistry, Biology</p>
+                        </div>
+                        <div class="mt-card interactive" onclick="mtSelectStream('Commerce')">
+                            <i data-lucide="calculator"></i>
+                            <h3>Commerce</h3>
+                            <p>Accounts, BST, Economics</p>
+                        </div>
+                        <div class="mt-card interactive" onclick="mtSelectStream('Arts')">
+                            <i data-lucide="pen-tool"></i>
+                            <h3>Arts</h3>
+                            <p>History, Pol. Sc, Geog</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 4: Subject Selection -->
+                <div class="mt-panel hidden-right" id="mtLevel4">
+                    <button class="mt-back-btn" id="btnBackToPrev"><i data-lucide="arrow-left"></i> Previous</button>
                     <div class="mt-grid mt-grid-4" id="mtSubjectGrid" style="margin-top: 1rem;">
                         <!-- Reactively Populated -->
                     </div>
                 </div>
 
-                <!-- Level 4: Quiz Hub -->
-                <div class="mt-panel hidden-right" id="mtLevel4">
-                    <button class="mt-back-btn" onclick="mtGoBack(3)"><i data-lucide="arrow-left"></i> Subjects</button>
+                <!-- Level 5: Quiz Hub -->
+                <div class="mt-panel hidden-right" id="mtLevel5">
+                    <button class="mt-back-btn" onclick="mtGoBack(4)"><i data-lucide="arrow-left"></i> Subjects</button>
                     <div class="mt-quiz-container" id="mtQuizContainer" style="margin-top: 1rem;">
                         <!-- Reactively Populated -->
                     </div>
@@ -688,13 +721,13 @@
 
     <!-- MOCK TEST JAVASCRIPT LOGIC -->
     <script>
-        const mtState = { level: 1, board: null, class: null, subject: null };
+        const mtState = { level: 1, board: null, class: null, stream: null, subject: null };
 
         const mtModal = document.getElementById('mockTestModal');
         const navMockTest = document.getElementById('navMockTest');
         const mobileNavMockTest = document.getElementById('mobileNavMockTest');
 
-        const mtSubjectsList = [
+        const mtSubjectsList910 = [
             { name: "Maths", icon: "calculator" },
             { name: "Science", icon: "flask-conical" },
             { name: "Hindi", icon: "languages" },
@@ -704,6 +737,33 @@
             { name: "History", icon: "hourglass" },
             { name: "Economics", icon: "trending-up" }
         ];
+
+        const mtStreamSubjects = {
+            'PCM': [
+                { name: "Physics", icon: "zap" },
+                { name: "Chemistry", icon: "flask-conical" },
+                { name: "Maths", icon: "calculator" },
+                { name: "English", icon: "book-open-check" }
+            ],
+            'PCB': [
+                { name: "Physics", icon: "zap" },
+                { name: "Chemistry", icon: "flask-conical" },
+                { name: "Biology", icon: "microscope" },
+                { name: "English", icon: "book-open-check" }
+            ],
+            'Commerce': [
+                { name: "Accountancy", icon: "calculator" },
+                { name: "Business Studies", icon: "briefcase" },
+                { name: "Economics", icon: "trending-up" },
+                { name: "English", icon: "book-open-check" }
+            ],
+            'Arts': [
+                { name: "History", icon: "hourglass" },
+                { name: "Geography", icon: "map" },
+                { name: "Political Science", icon: "landmark" },
+                { name: "Economics", icon: "trending-up" }
+            ]
+        };
 
         function openMockTestModal() {
             mtModal.classList.add('active');
@@ -720,7 +780,6 @@
         if (mobileNavMockTest) mobileNavMockTest.addEventListener('click', (e) => { e.preventDefault(); openMockTestModal(); });
         document.getElementById('mtCloseBtn').addEventListener('click', closeMockTestModal);
         
-        // Ensure background click closes modal
         mtModal.addEventListener('click', (e) => {
             if (e.target === mtModal) closeMockTestModal();
         });
@@ -737,11 +796,30 @@
             const subtitle = document.getElementById('mtSubtitle');
             if (mtState.level === 1) subtitle.innerText = "Select your educational board to begin";
             if (mtState.level === 2) subtitle.innerText = `${mtState.board} > Select Class`;
-            if (mtState.level === 3) subtitle.innerText = `${mtState.board} > Class ${mtState.class} > Select Subject`;
-            if (mtState.level === 4) subtitle.innerText = `${mtState.board} > Class ${mtState.class} > ${mtState.subject}`;
+            if (mtState.level === 3) subtitle.innerText = `${mtState.board} > Class ${mtState.class} > Select Stream`;
+            if (mtState.level === 4) {
+                const streamPart = mtState.stream ? ` > ${mtState.stream}` : "";
+                subtitle.innerText = `${mtState.board} > Class ${mtState.class}${streamPart} > Select Subject`;
+            }
+            if (mtState.level === 5) {
+                const streamPart = mtState.stream ? ` > ${mtState.stream}` : "";
+                subtitle.innerText = `${mtState.board} > Class ${mtState.class}${streamPart} > ${mtState.subject}`;
+            }
 
-            if (mtState.level === 3) mtRenderSubjects();
-            if (mtState.level === 4) mtRenderQuizzes();
+            if (mtState.level === 4) mtRenderSubjects();
+            if (mtState.level === 5) mtRenderQuizzes();
+
+            // Setup dynamic back button for Level 4
+            const btnBack = document.getElementById('btnBackToPrev');
+            if (btnBack) {
+                btnBack.onclick = () => {
+                    if (['9', '10'].includes(mtState.class)) mtGoBack(2);
+                    else mtGoBack(3);
+                };
+                btnBack.innerHTML = (['9', '10'].includes(mtState.class)) 
+                    ? `<i data-lucide="arrow-left"></i> Classes`
+                    : `<i data-lucide="arrow-left"></i> Streams`;
+            }
 
             if (window.lucide) setTimeout(() => lucide.createIcons(), 10);
         }
@@ -754,13 +832,32 @@
 
         function mtSelectClass(cls) {
             mtState.class = cls;
-            mtState.level = 3;
+            mtState.stream = null; // reset stream
+            if (['9', '10'].includes(cls)) {
+                mtState.level = 4; // Skip to subjects
+            } else {
+                mtState.level = 3; // Go to Streams
+            }
+            mtRenderLevel();
+        }
+
+        function mtSelectStream(stream) {
+            mtState.stream = stream;
+            mtState.level = 4;
             mtRenderLevel();
         }
 
         function mtRenderSubjects() {
             const grid = document.getElementById('mtSubjectGrid');
-            grid.innerHTML = mtSubjectsList.map(s => `
+            let subjects = [];
+            
+            if (['9', '10'].includes(mtState.class)) {
+                subjects = mtSubjectsList910;
+            } else if (mtState.stream) {
+                subjects = mtStreamSubjects[mtState.stream] || [];
+            }
+
+            grid.innerHTML = subjects.map(s => `
                 <div class="mt-subject-card interactive" onclick="mtSelectSubject('${s.name}')">
                     <i data-lucide="${s.icon}"></i>
                     <span>${s.name}</span>
@@ -770,30 +867,32 @@
 
         function mtSelectSubject(sub) {
             mtState.subject = sub;
-            mtState.level = 4;
+            mtState.level = 5;
             mtRenderLevel();
         }
 
         function mtRenderQuizzes() {
             const container = document.getElementById('mtQuizContainer');
             
-            // Re-use hubDataStore from hierarchical hub logic
             if (typeof hubDataStore === 'undefined' || hubDataStore.length === 0) {
                 container.innerHTML = `<div class="mt-empty-state"><i data-lucide="wifi-off"></i><p>Live Data Syncing or Unavailable. Please try again later.</p></div>`;
                 return;
             }
 
-            // Map UI subjects to exact Sheet subjects if needed
             let filterSubject = mtState.subject.toUpperCase().trim();
             if (filterSubject === "POLITICAL SCIENCE") filterSubject = "CIVICS";
+            if (filterSubject === "BUSINESS STUDIES") filterSubject = "BST";
             
             const matchedRows = hubDataStore.filter(r => 
                 r.boards === mtState.board.toUpperCase() &&
                 r.class === mtState.class &&
-                r.subject === filterSubject
+                r.subject === filterSubject &&
+                (!mtState.stream || r.stream === mtState.stream.toUpperCase())
             );
 
-            // Extract valid quizzes
+            // Level 4 filter by stream if applicable (if your sheet has a stream column, otherwise it filters by class/subject)
+            // Assuming for now it filters by Board/Class/Subject which is unique enough for Quizzes.
+            
             const validQuizzes = matchedRows.filter(r => r.quiz && r.quiz.trim() !== '');
 
             if (validQuizzes.length === 0) {
@@ -1668,7 +1767,8 @@
                 quiz: (r[5] || '').trim(),
                 lectures: (r[6] || '').trim(),
                 pyq: (r[7] || '').trim(),
-                extra: (r[8] || '').trim()
+                extra: (r[8] || '').trim(),
+                stream: (r[9] || '').trim().toUpperCase()
             })).filter(r => r.boards && r.class);
         }
 
