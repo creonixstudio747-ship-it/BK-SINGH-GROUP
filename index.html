@@ -821,8 +821,9 @@
         document.addEventListener("DOMContentLoaded", () => {
             const YOUTUBE_API_KEY = "AIzaSyB06NFG9FtXNdtO_qOtR3AkGl24mj22cYQ";
             const CHANNEL_ID = "UCQ9Mr2KzICkZzoc6r5R-h3w";
-            const MAX_RESULTS = 2;
-            const API_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${MAX_RESULTS}&type=video`;
+            const MAX_RESULTS = 4;
+            // Fetch 50 items so we have enough buffer to filter out shorts
+            const SEARCH_API_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=50&type=video`;
 
             const feedGrid = document.getElementById("youtubeFeedGrid");
             const ytModal = document.getElementById("youtubeModal");
@@ -844,45 +845,81 @@
                 if (interval > 1) return Math.floor(interval) + " minutes";
                 return Math.floor(seconds) + " seconds";
             }
+            
+            // ISO 8601 Duration Parser
+            function getDurationInSeconds(duration) {
+                const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+                if (!match) return 0;
+                const hours = (parseInt(match[1]) || 0);
+                const minutes = (parseInt(match[2]) || 0);
+                const seconds = (parseInt(match[3]) || 0);
+                return (hours * 3600) + (minutes * 60) + seconds;
+            }
 
             // Fetch Data
-            fetch(API_URL)
+            fetch(SEARCH_API_URL)
                 .then(response => response.json())
-                .then(data => {
-                    feedGrid.innerHTML = ""; // Clear loader
+                .then(async data => {
                     if (data.items && data.items.length > 0) {
-                        data.items.forEach(item => {
-                            const videoId = item.id.videoId;
-                            const title = item.snippet.title;
-                            const publishedAt = item.snippet.publishedAt;
-                            const thumbUrl = item.snippet.thumbnails.high.url;
-                            
-                            // Build Video Card
-                            const card = document.createElement("div");
-                            card.className = "video-card interactive";
-                            card.innerHTML = `
-                                <div class="video-thumbnail-wrapper">
-                                    <img src="${thumbUrl}" alt="Thumbnail for ${title}" loading="lazy" class="video-thumbnail">
-                                    <div class="play-icon"><i data-lucide="play"></i></div>
-                                </div>
-                                <div class="video-meta">
-                                    <h3 class="video-title">${title}</h3>
-                                    <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
-                                </div>
-                            `;
-                            
-                            // Click listener for Lightbox
-                            card.addEventListener("click", () => {
-                                ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-                                ytModal.classList.add("active");
-                                document.body.style.overflow = "hidden"; // Prevent scrolling
+                        const videoIds = data.items.map(item => item.id.videoId).join(",");
+                        const VIDEOS_API_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&id=${videoIds}&part=contentDetails`;
+                        
+                        // Fetch the video details to get their durations
+                        const vidRes = await fetch(VIDEOS_API_URL);
+                        const vidData = await vidRes.json();
+                        
+                        const durationMap = {};
+                        if (vidData.items) {
+                            vidData.items.forEach(v => {
+                                durationMap[v.id] = v.contentDetails.duration;
                             });
+                        }
 
-                            feedGrid.appendChild(card);
-                        });
-                        // Re-initialize any new lucide icons
-                        if (window.lucide) {
-                            window.lucide.createIcons();
+                        // Filter out Shorts (<= 60 seconds)
+                        const longVideos = data.items.filter(item => {
+                            const dur = durationMap[item.id.videoId];
+                            if (!dur) return true; // Fallback play safe
+                            return getDurationInSeconds(dur) > 61;
+                        }).slice(0, 4); // Take latest 4 long-form videos
+
+                        feedGrid.innerHTML = ""; // Clear loader
+                        
+                        if (longVideos.length > 0) {
+                            longVideos.forEach(item => {
+                                const videoId = item.id.videoId;
+                                const title = item.snippet.title;
+                                const publishedAt = item.snippet.publishedAt;
+                                const thumbUrl = item.snippet.thumbnails.high.url;
+                                
+                                // Build Video Card
+                                const card = document.createElement("div");
+                                card.className = "video-card interactive";
+                                card.innerHTML = `
+                                    <div class="video-thumbnail-wrapper">
+                                        <img src="${thumbUrl}" alt="Thumbnail for ${title}" loading="lazy" class="video-thumbnail">
+                                        <div class="play-icon"><i data-lucide="play"></i></div>
+                                    </div>
+                                    <div class="video-meta">
+                                        <h3 class="video-title">${title}</h3>
+                                        <div class="video-time">Uploaded ${timeSince(publishedAt)} ago</div>
+                                    </div>
+                                `;
+                                
+                                // Click listener for Lightbox
+                                card.addEventListener("click", () => {
+                                    ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                                    ytModal.classList.add("active");
+                                    document.body.style.overflow = "hidden"; // Prevent scrolling
+                                });
+
+                                feedGrid.appendChild(card);
+                            });
+                            // Re-initialize any new lucide icons
+                            if (window.lucide) {
+                                window.lucide.createIcons();
+                            }
+                        } else {
+                            feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No long-form videos found.</p>`;
                         }
                     } else {
                         feedGrid.innerHTML = `<p style="grid-column: span 12; text-align: center; color: var(--text-secondary);">No videos found.</p>`;
