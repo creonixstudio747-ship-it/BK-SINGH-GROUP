@@ -1707,7 +1707,24 @@
     <script>
         const hubState = { board: 'CBSE', level: 1, class: null, subject: null, subSubject: null, chapter: null };
 
-        function renderHub() {
+        function renderHub(fromPopState = false) {
+            // Fix height expansion bug by forcing reflow
+            const container = document.querySelector('.hub-view-container');
+            if (container) {
+                container.style.height = 'auto';
+                container.style.minHeight = 'auto';
+                // Force CSS Reflow immediately
+                container.style.display = 'none';
+                container.offsetHeight; // trigger reflow calculation
+                container.style.display = 'block';
+            }
+
+            // History State Management for 'Back' navigation
+            if (!fromPopState) {
+                const stateObj = JSON.parse(JSON.stringify(hubState));
+                history.pushState(stateObj, "Learning Hub", window.location.href);
+            }
+
             // Manage Panel Visibility using CSS classes (translate3d)
             document.querySelectorAll('.hub-panel').forEach(p => {
                 p.classList.remove('active', 'hidden-left', 'hidden-right');
@@ -2154,8 +2171,18 @@ Respond clearly, concisely, strictly academically, and in HTML format (use <b>, 
 
         // Initialize App Hub
         document.addEventListener("DOMContentLoaded", () => {
+            // Initialize history state on load
+            history.replaceState(JSON.parse(JSON.stringify(hubState)), "Learning Hub", window.location.href);
             fetchHubData();
-            renderHub();
+            renderHub(true); // Render initially without pushing state
+        });
+
+        // Intercept browser back button for Hub navigation
+        window.addEventListener("popstate", (e) => {
+            if (e.state && e.state.level !== undefined && e.state.board) {
+                Object.assign(hubState, e.state);
+                renderHub(true);
+            }
         });
     </script>
     <!-- Lucide loaded last so it never blocks page render -->
