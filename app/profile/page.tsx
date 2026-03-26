@@ -7,8 +7,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import { User, Mail, Phone, Calendar, Shield, Save, Loader2, Home, CheckCircle2 } from "lucide-react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../lib/firebase";
+import { doc, updateDoc, getFirestore } from "firebase/firestore";
+import { app } from "../../lib/firebase";
 
 export default function Profile() {
   const { user, loading } = useAuth();
@@ -32,6 +32,7 @@ export default function Profile() {
     
     setSaving(true);
     try {
+      const db = getFirestore(app);
       await updateDoc(doc(db, "users", user.uid), {
         displayName: displayName,
         updatedAt: new Date().toISOString()

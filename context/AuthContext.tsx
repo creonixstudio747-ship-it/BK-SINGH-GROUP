@@ -14,10 +14,11 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
+  getAuth,
   type User,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import { auth, googleProvider, db } from "../lib/firebase";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { app, googleProvider } from "../lib/firebase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -38,6 +39,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 async function syncUserToFirestore(user: User): Promise<void> {
   try {
+    const db = getFirestore();
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if (!snap.exists()) {
@@ -65,7 +67,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // onAuthStateChanged is a firebase/auth API — runs only in the browser.
+    // getAuth() called inside useEffect — runs only in the browser, never on the server.
+    const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
@@ -81,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = useCallback(
     async (email: string, password: string): Promise<void> => {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(getAuth(app), email, password);
     },
     []
   );
@@ -89,7 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const signup = useCallback(
     async (email: string, password: string, name: string): Promise<void> => {
       const { user: newUser } = await createUserWithEmailAndPassword(
-        auth,
+        getAuth(app),
         email,
         password
       );
@@ -101,11 +104,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const loginWithGoogle = useCallback(async (): Promise<void> => {
-    await signInWithPopup(auth, googleProvider);
+    await signInWithPopup(getAuth(app), googleProvider);
   }, []);
 
   const logout = useCallback(async (): Promise<void> => {
-    await signOut(auth);
+    await signOut(getAuth(app));
   }, []);
 
   return (
