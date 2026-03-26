@@ -1708,17 +1708,6 @@
         const hubState = { board: 'CBSE', level: 1, class: null, subject: null, subSubject: null, chapter: null };
 
         function renderHub(fromPopState = false) {
-            // Fix height expansion bug by forcing reflow
-            const container = document.querySelector('.hub-view-container');
-            if (container) {
-                container.style.height = 'auto';
-                container.style.minHeight = 'auto';
-                // Force CSS Reflow immediately
-                container.style.display = 'none';
-                container.offsetHeight; // trigger reflow calculation
-                container.style.display = 'block';
-            }
-
             // History State Management for 'Back' navigation
             if (!fromPopState) {
                 const stateObj = JSON.parse(JSON.stringify(hubState));
