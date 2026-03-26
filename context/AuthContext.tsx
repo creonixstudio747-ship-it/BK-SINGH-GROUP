@@ -22,6 +22,7 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<void>;
   signup: (email: string, pass: string, name: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  loginWithFacebook: () => Promise<void>;
   setupRecaptcha: (containerId: string) => void;
   sendOtp: (phoneNumber: string) => Promise<ConfirmationResult>;
   logout: () => Promise<void>;
@@ -80,6 +81,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await signInWithPopup(auth, googleProvider);
   };
 
+  const loginWithFacebook = async () => {
+    const { facebookProvider } = await import("../lib/firebase");
+    await signInWithPopup(auth, facebookProvider);
+  };
+
   const setupRecaptcha = (containerId: string) => {
     if (!recaptchaVerifier) {
       const verifier = new RecaptchaVerifier(auth, containerId, {
@@ -108,6 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         signup,
         loginWithGoogle,
+        loginWithFacebook,
         setupRecaptcha,
         sendOtp,
         logout,
