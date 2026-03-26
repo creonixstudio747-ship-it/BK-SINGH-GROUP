@@ -1,15 +1,12 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
       {
-        // Google user profile photos (OAuth)
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
       {
-        // Avatar placeholder service used in dashboard / profile
         protocol: "https",
         hostname: "avatar.iran.liara.run",
       },
@@ -17,4 +14,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
