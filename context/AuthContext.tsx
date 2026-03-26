@@ -1,127 +1,101 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import {
   onAuthStateChanged,
   signInWithPopup,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPhoneNumber,
-  RecaptchaVerifier,
-  ConfirmationResult,
-  User,
   updateProfile,
+  type User,
 } from "firebase/auth";
 import { auth, googleProvider, db } from "../lib/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, pass: string) => Promise<void>;
-  signup: (email: string, pass: string, name: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, name: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
-  setupRecaptcha: (containerId: string) => void;
-  sendOtp: (phoneNumber: string) => Promise<ConfirmationResult>;
   logout: () => Promise<void>;
 }
 
+// ---------------------------------------------------------------------------
+// Context
+// ---------------------------------------------------------------------------
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// ---------------------------------------------------------------------------
+// Sync user to Firestore (first login only)
+// ---------------------------------------------------------------------------
+async function syncUserToFirestore(user: User) {
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) {
+    await setDoc(ref, {
+      uid: user.uid,
+      email: user.email ?? null,
+      displayName: user.displayName ?? null,
+      photoURL: user.photoURL ?? null,
+      createdAt: new Date().toISOString(),
+    });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [recaptchaVerifier, setRecaptchaVerifier] = useState<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user);
-        // Sync user to Firestore if not exists
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (!userDoc.exists()) {
-          await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            phoneNumber: user.phoneNumber,
-            createdAt: new Date().toISOString(),
-          }, { merge: true });
-        }
-      } else {
-        setUser(null);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser);
+      if (firebaseUser) {
+        // Non-blocking — don't await in the listener
+        syncUserToFirestore(firebaseUser).catch(console.error);
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, pass: string) => {
-    await signInWithEmailAndPassword(auth, email, pass);
-  };
+  const login = useCallback(async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
+  }, []);
 
-  const signup = async (email: string, pass: string, name: string) => {
-    const res = await createUserWithEmailAndPassword(auth, email, pass);
-    if (res.user) {
-      await updateProfile(res.user, { displayName: name });
-      await setDoc(doc(db, "users", res.user.uid), {
-        uid: res.user.uid,
-        email: email,
-        displayName: name,
-        createdAt: new Date().toISOString(),
-      });
-    }
-  };
+  const signup = useCallback(async (email: string, password: string, name: string) => {
+    const { user: newUser } = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(newUser, { displayName: name });
+    await syncUserToFirestore({ ...newUser, displayName: name } as User);
+  }, []);
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = useCallback(async () => {
     await signInWithPopup(auth, googleProvider);
-  };
+  }, []);
 
-  const setupRecaptcha = (containerId: string) => {
-    if (!recaptchaVerifier) {
-      const verifier = new RecaptchaVerifier(auth, containerId, {
-        size: "invisible",
-      });
-      setRecaptchaVerifier(verifier);
-    }
-  };
-
-  const sendOtp = async (phoneNumber: string) => {
-    if (!recaptchaVerifier) throw new Error("Recaptcha not initialized");
-    // Ensure phoneNumber starts with +91 if not specified
-    const formattedPhone = phoneNumber.startsWith("+") ? phoneNumber : `+91${phoneNumber}`;
-    return await signInWithPhoneNumber(auth, formattedPhone, recaptchaVerifier);
-  };
-
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await signOut(auth);
-  };
+  }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        signup,
-        loginWithGoogle,
-        setupRecaptcha,
-        sendOtp,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+// ---------------------------------------------------------------------------
+// Hook
+// ---------------------------------------------------------------------------
+export const useAuth = (): AuthContextType => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
+  return ctx;
 };
