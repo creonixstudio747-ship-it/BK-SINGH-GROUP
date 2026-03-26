@@ -1,6 +1,10 @@
 // lib/firebase.ts
-// SSR-safe lazy singleton — avoids "window is not defined" on Vercel Server build.
-// Firebase Auth uses browser APIs, so we gate initialization behind a client check.
+// SSR-safe Firebase singleton for Next.js App Router.
+// IMPORTANT: getAuth() validates the API key immediately when called.
+// Calling it at module level causes Vercel's SSR prerender to crash with
+// auth/invalid-api-key because the module is evaluated on the server.
+// We guard getAuth() and getFirestore() behind typeof window so they only
+// run in the browser, never during the server-side static generation phase.
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
@@ -16,18 +20,16 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Singleton guard — works in both browser and SSR/build contexts.
-// initializeApp is safe to call at module level in Next.js because
-// firebase/app itself doesn't use window. Only firebase/auth does.
+// initializeApp is safe at module level — it only stores config, never validates the API key.
 const app: FirebaseApp = getApps().length === 0
   ? initializeApp(firebaseConfig)
   : getApp();
 
-// getAuth and getFirestore are safe to export — they only access window
-// when methods like signInWithPopup() are actually called, which only
-// happens inside "use client" components.
-const auth: Auth = getAuth(app);
-const db: Firestore = getFirestore(app);
+// getAuth() and getFirestore() are guarded: they are only instantiated in the browser.
+// During SSR/prerender these resolve to null, but all callers (useEffect, event handlers)
+// only execute client-side so the null is never accessed.
+const auth = (typeof window !== "undefined" ? getAuth(app) : null) as Auth;
+const db = (typeof window !== "undefined" ? getFirestore(app) : null) as Firestore;
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope("profile");
