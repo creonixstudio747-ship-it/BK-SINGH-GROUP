@@ -1432,6 +1432,9 @@
                         ytIframeContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                         ytModal.classList.add("active");
                         document.body.style.overflow = "hidden";
+                        
+                        // Push history state to intercept the back button
+                        history.pushState({ modalOpen: true, modalType: 'youtube' }, "Video Player", window.location.href);
                     });
                     feedGrid.appendChild(card);
                 });
@@ -1520,15 +1523,35 @@
             }
 
             // Close Modal Logic
-            const closeModal = () => {
+            const closeModal = (fromPopState = false) => {
+                if (!ytModal.classList.contains("active")) return;
                 ytModal.classList.remove("active");
                 ytIframeContainer.innerHTML = ""; // Destroy iframe to stop video playback
                 document.body.style.overflow = ""; // Restore scrolling
+                
+                // If closing manually (not via back button), remove the state we pushed
+                if (!fromPopState && history.state && history.state.modalOpen) {
+                    history.back();
+                }
             };
 
-            ytCloseBtn.addEventListener("click", closeModal);
+            ytCloseBtn.addEventListener("click", () => closeModal(false));
             ytModal.addEventListener("click", (e) => {
-                if (e.target === ytModal) closeModal();
+                if (e.target === ytModal) closeModal(false);
+            });
+
+            // Intercept browser back button
+            window.addEventListener("popstate", (e) => {
+                if (ytModal.classList.contains("active")) {
+                    closeModal(true);
+                }
+            });
+
+            // Intercept Esc key
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && ytModal.classList.contains("active")) {
+                    closeModal(false);
+                }
             });
         });
     </script>
