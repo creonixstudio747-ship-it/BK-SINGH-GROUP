@@ -12,7 +12,7 @@ interface AuthModalProps {
 type AuthState = "METHODS" | "EMAIL" | "PHONE" | "VERIFY";
 
 const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup, loginWithGoogle, loginWithFacebook, setupRecaptcha, sendOtp } = useAuth();
+  const { login, signup, loginWithGoogle, setupRecaptcha, sendOtp } = useAuth();
   const [state, setState] = useState<AuthState>("METHODS");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,11 +25,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && state === "PHONE") {
-      // Small delay to ensure the recaptcha-container div is rendered
-      const timer = setTimeout(() => {
-        setupRecaptcha("recaptcha-container");
-      }, 100);
-      return () => clearTimeout(timer);
+      setupRecaptcha("recaptcha-container");
     }
   }, [isOpen, state]);
 
@@ -38,21 +34,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      setError("");
       await loginWithGoogle();
-      onClose();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFacebookLogin = async () => {
-    try {
-      setLoading(true);
-      setError("");
-      await loginWithFacebook();
       onClose();
     } catch (err: any) {
       setError(err.message);
@@ -126,15 +108,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               Continue with Google
             </button>
             <div className="auth-divider"><span>OR</span></div>
-            <button className="auth-btn" onClick={() => { setError(""); setState("PHONE"); }}>
-              <Phone size={20} /> Continue with Phone
+            <button className="auth-btn" onClick={() => setState("PHONE")}>
+              <Phone size={20} /> Login with Phone
             </button>
-            <button className="auth-btn" onClick={handleFacebookLogin}>
-              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/facebook.svg" width="20" alt="Facebook" />
-              Continue with Facebook
-            </button>
-            <button className="auth-btn" onClick={() => { setError(""); setState("EMAIL"); }}>
-              <Mail size={20} /> Continue with Email
+            <button className="auth-btn" onClick={() => setState("EMAIL")}>
+              <Mail size={20} /> Login with Email
             </button>
           </div>
         )}
