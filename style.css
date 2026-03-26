@@ -2382,4 +2382,108 @@ footer {
 }
 
 
+/* ============================================================
+   MOBILE PORTRAIT LAYOUT OVERRIDES (<768px)
+   Only touches these 4 sections — desktop/tablet untouched.
+   ============================================================ */
 
+@media (max-width: 768px) {
+
+  /* ----------------------------------------------------------
+     1. STATISTICS SECTION — 2 stats per row (2-column grid)
+     ---------------------------------------------------------- */
+  .stats-grid.grid-12 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .stats-grid.grid-12 .stat-card {
+    grid-column: auto !important; /* override any span classes */
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .stats-grid.grid-12 .stat-value {
+    font-size: 1.85rem;
+  }
+
+  /* ----------------------------------------------------------
+     2. OUR EXPERTISE — 1 per row, full-width rectangular cards
+     ---------------------------------------------------------- */
+  .modules-grid.grid-12 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .modules-grid.grid-12 .module-card {
+    grid-column: auto !important;
+    width: calc(100% - 2px); /* stay within side padding */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.25rem;
+    border-radius: 14px;
+    min-height: unset;
+  }
+
+  .modules-grid.grid-12 .module-content {
+    max-width: 80%;
+  }
+
+  .modules-grid.grid-12 .module-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .modules-grid.grid-12 .module-desc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ----------------------------------------------------------
+     3. LEARNING HUB CLASS CARDS — 2 cards per row
+        Overrides the blanket hub-grid → 1fr rule at 768px.
+     ---------------------------------------------------------- */
+  .hub-grid {
+    /* default for subject/resource grids: keep 1-col */
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Only the Class-level grid (grid-4) gets 2 columns */
+  .hub-grid.class-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .hub-grid.class-grid .hub-card {
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+
+  /* ----------------------------------------------------------
+     4. COURSE ENROLLMENT / PRICING — 1 per row, full-width cards
+     ---------------------------------------------------------- */
+  .pricing-grid.grid-12 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .pricing-grid.grid-12 .pricing-card {
+    grid-column: auto !important;
+    width: 100%;
+    padding: 1.75rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  /* General page padding — ensure comfortable side margins */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}

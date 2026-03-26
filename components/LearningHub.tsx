@@ -55,7 +55,7 @@ const LearningHub: React.FC = () => {
       <div className="hub-view-container glass-card interactive min-h-[400px] p-8">
         {level === 1 && (
           <div className="hub-panel active">
-            <div className="hub-grid grid-4">
+            <div className="hub-grid grid-4 class-grid">
               {classes.map((c) => (
                 <div key={c} className="hub-card pb-4 cursor-pointer" onClick={() => { setSelectedClass(c); goLevel(2); }}>
                     <div className="p-8 flex flex-col items-center">
